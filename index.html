@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>电子科技大学 2026 年 6 月学术交流月讲座表</title>
+  <meta name="description" content="电子科技大学研究生院 2026 年 6 月第 11 届学术交流月讲座时间、地点、主讲人与内容摘要。">
+  <link rel="canonical" href="https://xueshujiangzuo.jasonmumiao.online/">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172033;
+      --muted: #667085;
+      --subtle: #8a94a6;
+      --line: #dfe5ee;
+      --panel: #ffffff;
+      --paper: #f6f8fb;
+      --paper-strong: #eef3f8;
+      --brand: #b42318;
+      --brand-soft: #fff1ef;
+      --teal: #0f766e;
+      --teal-soft: #e9fbf7;
+      --gold: #a16207;
+      --gold-soft: #fff7dc;
+      --blue: #175cd3;
+      --blue-soft: #eef4ff;
+      --shadow: 0 18px 48px rgba(23, 32, 51, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(180deg, rgba(238, 243, 248, 0.96) 0%, rgba(246, 248, 251, 0.78) 380px, #ffffff 100%),
+        var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 36px 0 24px;
+      border-bottom: 1px solid rgba(223, 229, 238, 0.9);
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.12;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .source-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .source-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      padding: 22px 0 20px;
+    }
+
+    .stat {
+      min-height: 92px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 10px 30px rgba(23, 32, 51, 0.05);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .controls-band {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 12px 0;
+      border-top: 1px solid rgba(223, 229, 238, 0.8);
+      border-bottom: 1px solid rgba(223, 229, 238, 0.9);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px 16px;
+      align-items: end;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-button,
+    .clear-button {
+      min-height: 38px;
+      padding: 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .filter-button[aria-pressed="true"] {
+      border-color: var(--brand);
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .range-controls {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr)) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .field {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field input {
+      width: 100%;
+      min-width: 0;
+      min-height: 38px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    .clear-button {
+      color: var(--muted);
+    }
+
+    .clear-button:hover {
+      border-color: var(--muted);
+      color: var(--ink);
+    }
+
+    .result-count {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    main {
+      padding: 26px 0 56px;
+    }
+
+    .notice {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border: 1px solid #f2d28f;
+      border-radius: 8px;
+      background: var(--gold-soft);
+      color: #6f4200;
+      font-size: 14px;
+    }
+
+    .notice-stack {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .notice-stack .notice {
+      margin: 0;
+    }
+
+    .notice.info {
+      border-color: #bfdbfe;
+      background: var(--blue-soft);
+      color: #173b7a;
+    }
+
+    .notice.good {
+      border-color: #99f6e4;
+      background: var(--teal-soft);
+      color: #115e59;
+    }
+
+    .day {
+      margin-top: 28px;
+    }
+
+    .day:first-of-type {
+      margin-top: 0;
+    }
+
+    .day-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .day-heading h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .day-heading span {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .event-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 174px minmax(0, 1.25fr) minmax(230px, 0.75fr);
+      min-height: 170px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 14px 34px rgba(23, 32, 51, 0.07);
+      overflow: hidden;
+    }
+
+    .event[hidden] {
+      display: none;
+    }
+
+    .time-cell {
+      position: relative;
+      padding: 20px 18px 20px 22px;
+      border-right: 1px solid var(--line);
+      background: var(--paper-strong);
+    }
+
+    .time-cell::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--teal);
+    }
+
+    .event[data-period="afternoon"] .time-cell::before {
+      background: var(--brand);
+    }
+
+    .event[data-period="evening"] .time-cell::before {
+      background: var(--gold);
+    }
+
+    .period {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .event[data-period="afternoon"] .period {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .event[data-period="evening"] .period {
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .clock {
+      display: block;
+      margin: 0;
+      font-size: 27px;
+      line-height: 1.15;
+      font-weight: 850;
+    }
+
+    .duration {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .content-cell {
+      padding: 19px 20px;
+    }
+
+    .title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .school {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 2px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .format {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .format.online {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .speaker {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary {
+      margin: 12px 0 0;
+      color: #30394d;
+      font-size: 15px;
+    }
+
+    .meta-cell {
+      padding: 19px 18px;
+      border-left: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .meta-line {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta-line strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .correction {
+      margin: 10px 0 0;
+      padding: 10px 11px;
+      border-radius: 8px;
+      background: var(--gold-soft);
+      color: #6f4200;
+      font-size: 13px;
+    }
+
+    .empty-state {
+      display: none;
+      margin: 24px 0;
+      padding: 18px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+      background: var(--panel);
+    }
+
+    .empty-state.is-visible {
+      display: block;
+    }
+
+    footer {
+      padding: 26px 0 36px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .wrap {
+        width: min(100% - 28px, 760px);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .controls {
+        align-items: flex-start;
+        grid-template-columns: 1fr;
+      }
+
+      .range-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .clear-button {
+        width: 100%;
+      }
+
+      .event {
+        grid-template-columns: 150px minmax(0, 1fr);
+      }
+
+      .meta-cell {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        padding-top: 24px;
+      }
+
+      .wrap {
+        width: min(100% - 22px, 540px);
+      }
+
+      h1 {
+        font-size: 31px;
+      }
+
+      .lead {
+        font-size: 15px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .stat {
+        min-height: 82px;
+        padding: 13px;
+      }
+
+      .stat strong {
+        font-size: 25px;
+      }
+
+      .controls-band {
+        position: static;
+      }
+
+      .filters {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: 100%;
+      }
+
+      .range-controls {
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+
+      .filter-button,
+      .clear-button {
+        width: 100%;
+        min-width: 0;
+        padding-inline: 7px;
+        font-size: 13px;
+      }
+
+      .day-heading {
+        display: block;
+      }
+
+      .day-heading h2 {
+        font-size: 20px;
+      }
+
+      .day-heading span {
+        display: block;
+        margin-top: 3px;
+      }
+
+      .event {
+        display: block;
+      }
+
+      .time-cell {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .clock {
+        font-size: 25px;
+      }
+
+      .content-cell,
+      .meta-cell {
+        padding: 16px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="kicker">第 11 届研究生学术交流月</div>
+      <h1>电子科技大学 2026 年 6 月学术交流月讲座表</h1>
+      <p class="lead">按实际讲座时间整理 12 场通知，突出日期、时段、地点/线上入口和内容摘要，适合手机与桌面快速浏览。</p>
+      <div class="source-row" aria-label="数据来源">
+        <span>数据源：<a href="https://gr.uestc.edu.cn/jiaoxue/145?page=1" target="_blank" rel="noopener">电子科技大学研究生院</a></span>
+        <span>整理时间：2026-06-05</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap stats" aria-label="讲座统计">
+    <div class="stat"><strong>12</strong><span>场 2026 年 6 月讲座通知</span></div>
+    <div class="stat"><strong>10</strong><span>场线下讲座</span></div>
+    <div class="stat"><strong>2</strong><span>场线上 QQ 群课堂</span></div>
+    <div class="stat"><strong>8-30</strong><span>讲座日期跨度：6 月 8 日至 30 日</span></div>
+  </section>
+
+  <div class="controls-band">
+    <div class="wrap controls">
+      <div class="filters" role="group" aria-label="讲座筛选">
+        <button class="filter-button" type="button" data-filter-group="format" data-filter-value="offline" aria-pressed="false">线下</button>
+        <button class="filter-button" type="button" data-filter-group="format" data-filter-value="online" aria-pressed="false">线上</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+      </div>
+      <div class="result-count" aria-live="polite"><span id="visible-count">12</span> / 12 场</div>
+      <div class="range-controls" aria-label="日期和时间筛选">
+        <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="2026-06-08" max="2026-06-30"></label>
+        <label class="field" for="date-end"><span>结束日期</span><input id="date-end" type="date" min="2026-06-08" max="2026-06-30"></label>
+        <label class="field" for="time-start"><span>开始时间</span><input id="time-start" type="time" step="900"></label>
+        <label class="field" for="time-end"><span>结束时间</span><input id="time-end" type="time" step="900"></label>
+        <button class="clear-button" type="button" id="clear-filters">清空筛选</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="notice-stack">
+      <p class="notice good">线下讲座直接按表中地点前往即可，不需要走报名流程；建议提前到场，现场听从学院或工作人员安排。</p>
+      <p class="notice info">请带上《电子科技大学研究生学术活动登记表》用于现场盖章/登记。官方下载：<a href="https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc" target="_blank" rel="noopener">研究生学术活动登记表</a>；留学生版本：<a href="https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx" target="_blank" rel="noopener">研究生学术活动登记表（留学生）</a>。</p>
+      <p class="notice">“射频器件市场的转型与现状”源网页写作 2024 年 6 月 25 日；因其发布于 2026 年且 2026-06-25 为周四，本表按 2026-06-25 修正并保留提示。</p>
+    </div>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 8 日 · 周一</h2>
+        <span>上午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-08" data-start="540" data-end="540">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">09:00</strong>
+            <div class="duration">结束时间未注明</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">航空航天学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>复杂气-水两相流 4D 测量的挑战</h3>
+            <p class="speaker">Kyung Chun Kim 教授</p>
+            <p class="summary">围绕复杂气-水两相流四维测量难题，介绍高速体积成像、粒子跟踪测速与机器学习辅助重建等前沿方法，关注环境与工业过程中瞬态、体积流动的精确测量。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>清水河校区品学楼 B103</p>
+            <p class="meta-line"><strong>系列</strong>航空航天学院系列讲座一</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14580" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 15 日 · 周一</h2>
+        <span>上午 2 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="600" data-end="600">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:00</strong>
+            <div class="duration">结束时间未注明</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">信息与软件工程学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>VR+AI 视频传输关键技术</h3>
+            <p class="speaker">郭宗明教授 · 北京大学</p>
+            <p class="summary">介绍人工智能与 VR 视频融合下的高质量传输方案，包括 QoE 驱动的视点自适应传输框架、视点预测、全景视频映射、分块传输及大模型 VR 视频生成技术。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>沙河校区主楼中 324</p>
+            <p class="meta-line"><strong>系列</strong>信息与软件工程学院系列讲座一</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14564" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="710">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:20-11:50</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">医学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>神经科学领域重大进展</h3>
+            <p class="speaker">张存金教授</p>
+            <p class="summary">从神经免疫疾病的国际现状、临床危害、疾病诱因与治疗出发，讲解重大成果的发现过程、新型研发靶点的科学方法及神经治疗新兴技术。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>沙河校区二教 306</p>
+            <p class="meta-line"><strong>系列</strong>医学院系列讲座一</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14570" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 16 日 · 周二</h2>
+        <span>上午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="620" data-end="710">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:20-11:50</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">医学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>半导体阵列生物芯片及微纳样本二维操控</h3>
+            <p class="speaker">马汉彬教授</p>
+            <p class="summary">系统介绍半导体阵列生物芯片与微纳样本二维操控进展，重点讲解有源数字微流控技术及其在高通量、精准可控、自动化生命科学研究平台中的应用。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>沙河校区二教 306</p>
+            <p class="meta-line"><strong>系列</strong>医学院系列讲座四</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14573" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 17 日 · 周三</h2>
+        <span>上午 1 场 · 下午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="620" data-end="710">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:20-11:50</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">医学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>中华传统文化经典导读：《周易》文本简介</h3>
+            <p class="speaker">钱浩教授</p>
+            <p class="summary">介绍《周易》的文本组成、经传形成过程、易学思想演进，以及近代以来重要考古发现对《周易》文本研究的影响。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>沙河校区二教 306</p>
+            <p class="meta-line"><strong>系列</strong>医学院系列讲座五</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14574" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="870" data-end="870">
+          <div class="time-cell">
+            <span class="period">下午</span>
+            <strong class="clock">14:30</strong>
+            <div class="duration">结束时间未注明</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">集成电路科学与工程学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>大有可为的集成电路封装技术</h3>
+            <p class="speaker">张进兵 · 天水华天科技股份有限公司</p>
+            <p class="summary">从半导体器件分类切入，介绍集成电路芯片制造流程、封装功能与发展历程，对比先进封装和传统封装的问题与攻克方向，并分享华天科技封装技术成果。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>国际创新中心 B 栋 504 报告厅</p>
+            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座 1</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14583" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 18 日 · 周四</h2>
+        <span>上午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:00-11:30</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">集成电路科学与工程学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>芯趋势共飞腾：通算和智算芯片的技术和生态</h3>
+            <p class="speaker">任巨 · 飞腾信息技术有限公司</p>
+            <p class="summary">围绕国产通用 CPU 与信息技术应用创新产业，介绍计算机组成与体系结构趋势、国产 CPU 发展必要性、信创产业发展历程及通算和智算芯片挑战。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>国际创新中心 B 栋 504 报告厅</p>
+            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座 2</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14584" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 22 日 · 周一</h2>
+        <span>上午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="online" data-period="morning" data-date="2026-06-22" data-start="620" data-end="710">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:20-11:50</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">医学院</span>
+              <span class="format online">线上</span>
+            </div>
+            <h3>眼科医疗 AI 的技术前沿与学科交叉创新</h3>
+            <p class="speaker">陈新建教授</p>
+            <p class="summary">结合人工智能与眼科医疗交叉研究经历、重点项目成果和学术积累，分享眼科医疗 AI 的技术突破、设备研发、诊断算法与实践经验。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>形式</strong>线上讲座 · QQ 群课堂</p>
+            <p class="meta-line"><strong>QQ 群</strong>1094259296</p>
+            <p class="meta-line"><strong>系列</strong>医学院系列讲座二</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14571" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 25 日 · 周四</h2>
+        <span>下午 1 场 · 晚上 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-25" data-start="870" data-end="870">
+          <div class="time-cell">
+            <span class="period">下午</span>
+            <strong class="clock">14:30</strong>
+            <div class="duration">结束时间未注明</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">集成电路科学与工程学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>射频器件市场的转型与现状：日本射频器件产业的兴衰</h3>
+            <p class="speaker">YAMAGA SHIGEKI（山贺重来）</p>
+            <p class="summary">解析日本射频器件产业约 20 年前领先、如今市场份额衰退的原因，并介绍新日本无线株式会社凭借自主理念走出行业困境的策略。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>品学楼 B111</p>
+            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座 3</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14585" target="_blank" rel="noopener">查看源网页</a>
+            <p class="correction">源站原文为 2024 年 6 月 25 日；本表按 2026 年修正。</p>
+          </aside>
+        </article>
+
+        <article class="event" data-format="offline" data-period="evening" data-date="2026-06-25" data-start="1170" data-end="1170">
+          <div class="time-cell">
+            <span class="period">晚上</span>
+            <strong class="clock">19:30</strong>
+            <div class="duration">结束时间未注明</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">航空航天学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>矛盾论视角下的红楼情感动力学刍议</h3>
+            <p class="speaker">李滚教授</p>
+            <p class="summary">以《矛盾论》为哲学内核，借物理学基本相互作用和动力学系统概念，从情感动力学角度重新审视《红楼梦》中人物情感、家族兴衰与悲剧演化。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>清水河校区品学楼 B203</p>
+            <p class="meta-line"><strong>系列</strong>航空航天学院系列讲座二</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14582" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 29 日 · 周一</h2>
+        <span>上午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="online" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710">
+          <div class="time-cell">
+            <span class="period">上午</span>
+            <strong class="clock">10:20-11:50</strong>
+            <div class="duration">约 90 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">医学院</span>
+              <span class="format online">线上</span>
+            </div>
+            <h3>抗肿瘤免疫治疗：从理论到实践</h3>
+            <p class="speaker">王晨辉教授</p>
+            <p class="summary">围绕肿瘤免疫治疗理论与临床转化进展，介绍肿瘤免疫微环境、免疫检查点调控机制、细胞治疗策略，以及抗体药物和细胞治疗的关键路径。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>形式</strong>线上讲座 · QQ 群课堂</p>
+            <p class="meta-line"><strong>QQ 群</strong>828931734</p>
+            <p class="meta-line"><strong>系列</strong>医学院系列讲座三</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14572" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>6 月 30 日 · 周二</h2>
+        <span>下午 1 场</span>
+      </div>
+      <div class="event-list">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-30" data-start="900" data-end="960">
+          <div class="time-cell">
+            <span class="period">下午</span>
+            <strong class="clock">15:00-16:00</strong>
+            <div class="duration">约 60 分钟</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">集成电路科学与工程学院</span>
+              <span class="format">线下</span>
+            </div>
+            <h3>跨越验证鸿沟：从传统方法学到 AI Agent 驱动的芯未来</h3>
+            <p class="speaker">屠宁杰 · 联发芯软件设计（成都）有限公司</p>
+            <p class="summary">全景梳理现代数字芯片验证技术演进、软硬件协同仿真、形式化验证挑战与 AI 赋能验证创新，以 Spec2Code 等案例展望未来 EDA 技术变革。</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>地点</strong>国际创新中心 B 栋 504 报告厅</p>
+            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座 4</p>
+            <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14586" target="_blank" rel="noopener">查看源网页</a>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <div class="empty-state" id="empty-state">当前筛选没有匹配的讲座。</div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      本页为公开通知整理版，时间地点以源网页后续更新为准。
+    </div>
+  </footer>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll(".filter-button"));
+    const events = Array.from(document.querySelectorAll(".event"));
+    const daySections = Array.from(document.querySelectorAll("[data-day-section]"));
+    const visibleCount = document.getElementById("visible-count");
+    const emptyState = document.getElementById("empty-state");
+    const dateStartInput = document.getElementById("date-start");
+    const dateEndInput = document.getElementById("date-end");
+    const timeStartInput = document.getElementById("time-start");
+    const timeEndInput = document.getElementById("time-end");
+    const clearButton = document.getElementById("clear-filters");
+
+    function selectedValues(group) {
+      return buttons
+        .filter((button) => button.dataset.filterGroup === group && button.getAttribute("aria-pressed") === "true")
+        .map((button) => button.dataset.filterValue);
+    }
+
+    function minutesFromTime(value) {
+      if (!value) return null;
+      const [hours, minutes] = value.split(":").map(Number);
+      return hours * 60 + minutes;
+    }
+
+    function normalizedRange(a, b) {
+      if (a === null && b === null) return [null, null];
+      if (a !== null && b !== null && a > b) return [b, a];
+      return [a, b];
+    }
+
+    function matchesCurrentFilters(event) {
+      const formats = selectedValues("format");
+      const periods = selectedValues("period");
+      const [timeStart, timeEnd] = normalizedRange(minutesFromTime(timeStartInput.value), minutesFromTime(timeEndInput.value));
+      const [dateStart, dateEnd] = normalizedRange(dateStartInput.value || null, dateEndInput.value || null);
+      const eventDate = event.dataset.date;
+      const eventStart = Number(event.dataset.start);
+      const eventEnd = Number(event.dataset.end);
+
+      if (formats.length && !formats.includes(event.dataset.format)) return false;
+      if (periods.length && !periods.includes(event.dataset.period)) return false;
+      if (dateStart && eventDate < dateStart) return false;
+      if (dateEnd && eventDate > dateEnd) return false;
+      if (timeStart !== null && eventEnd < timeStart) return false;
+      if (timeEnd !== null && eventStart > timeEnd) return false;
+      return true;
+    }
+
+    function applyFilters() {
+      let count = 0;
+      events.forEach((event) => {
+        const visible = matchesCurrentFilters(event);
+        event.hidden = !visible;
+        if (visible) count += 1;
+      });
+
+      daySections.forEach((section) => {
+        const hasVisibleEvent = Array.from(section.querySelectorAll(".event")).some((event) => !event.hidden);
+        section.hidden = !hasVisibleEvent;
+      });
+
+      visibleCount.textContent = String(count);
+      emptyState.classList.toggle("is-visible", count === 0);
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const pressed = button.getAttribute("aria-pressed") === "true";
+        button.setAttribute("aria-pressed", String(!pressed));
+        applyFilters();
+      });
+    });
+
+    [dateStartInput, dateEndInput, timeStartInput, timeEndInput].forEach((input) => {
+      input.addEventListener("input", applyFilters);
+    });
+
+    clearButton.addEventListener("click", () => {
+      buttons.forEach((button) => button.setAttribute("aria-pressed", "false"));
+      dateStartInput.value = "";
+      dateEndInput.value = "";
+      timeStartInput.value = "";
+      timeEndInput.value = "";
+      applyFilters();
+    });
+  </script>
+</body>
+</html>
