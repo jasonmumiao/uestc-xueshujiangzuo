@@ -43,7 +43,7 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Cloudflare Worker
-        if: steps.commit.outputs.changed == 'true' && env.CLOUDFLARE_API_TOKEN != ''
+        if: (steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && env.CLOUDFLARE_API_TOKEN != ''
         run: |
           rm -rf dist
           mkdir -p dist
