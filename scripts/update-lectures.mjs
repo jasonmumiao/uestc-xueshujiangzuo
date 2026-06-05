@@ -79,23 +79,24 @@ function stripHtml(html = "") {
 }
 
 async function fetchText(url, attempt = 1) {
+  const maxAttempts = 5;
   const response = await fetch(url, {
     headers: {
       "user-agent": "Mozilla/5.0 lecture-updater (+https://xueshujiangzuo.jasonmumiao.online/)"
     }
   }).catch((error) => {
-    if (attempt < 3) return null;
+    if (attempt < maxAttempts) return null;
     throw error;
   });
 
   if (!response) {
-    await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+    await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
     return fetchText(url, attempt + 1);
   }
 
   if (!response.ok) {
-    if (attempt < 3) {
-      await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+    if (attempt < maxAttempts) {
+      await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
       return fetchText(url, attempt + 1);
     }
     throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
@@ -451,11 +452,23 @@ async function main() {
   }
 
   const existingHtml = await readFile(OUTPUT_FILE, "utf8");
-  const listItems = await collectListItems();
+  let listItems = [];
+  try {
+    listItems = await collectListItems();
+  } catch (error) {
+    console.warn(`Source list is temporarily unavailable; keeping existing page. ${error.message}`);
+    return;
+  }
   const detailEvents = [];
 
   for (const item of listItems) {
-    const event = await parseDetail(item);
+    let event;
+    try {
+      event = await parseDetail(item);
+    } catch (error) {
+      console.warn(`Skipped detail page after fetch/parse failure: ${item.href} ${error.message}`);
+      continue;
+    }
     if (!event.date) {
       console.warn(`Skipped unresolved event time: ${item.title} ${item.href}`);
       continue;
@@ -468,7 +481,8 @@ async function main() {
     .sort((a, b) => a.date.localeCompare(b.date) || a.startMinutes - b.startMinutes || a.title.localeCompare(b.title, "zh-CN"));
 
   if (!events.length) {
-    throw new Error("No lecture events were parsed; refusing to overwrite index.html.");
+    console.warn("No lecture events were parsed; keeping existing page.");
+    return;
   }
 
   await writeFile(OUTPUT_FILE, renderHtml(events, existingHtml));
