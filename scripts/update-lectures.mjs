@@ -1,12 +1,16 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const SOURCE_BASE = "https://gr.uestc.edu.cn";
 const LIST_PATH = "/jiaoxue/145";
 const OUTPUT_FILE = new URL("../index.html", import.meta.url);
+const SUMMARY_CACHE_FILE = new URL("../data/summary-cache.json", import.meta.url);
 const TERM_START = "2026-06-01";
 const UPDATE_CUTOFF = "2026-07-12";
 const MAX_LIST_PAGES = 8;
 const SUMMARY_LIMIT = 180;
+const AI_SUMMARY_LIMIT = 180;
+const AI_SUMMARY_MODEL = process.env.AI_SUMMARY_MODEL || "@cf/meta/llama-3.1-8b-instruct";
 
 const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc";
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
@@ -24,6 +28,8 @@ const PERIOD_LABELS = {
   afternoon: "下午",
   evening: "晚上"
 };
+
+let aiDisabledReason = "";
 
 function nowShanghaiDate() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -176,6 +182,134 @@ function truncate(value, limit = SUMMARY_LIMIT) {
   return `${text.slice(0, limit).replace(/[，。；、：:\s]+$/, "")}...`;
 }
 
+function hashText(value = "") {
+  return createHash("sha256").update(value).digest("hex").slice(0, 16);
+}
+
+async function readJsonFile(url, fallback) {
+  try {
+    return JSON.parse(await readFile(url, "utf8"));
+  } catch (error) {
+    if (error.code === "ENOENT") return fallback;
+    throw error;
+  }
+}
+
+async function writeJsonFile(url, data) {
+  await mkdir(new URL(".", url), { recursive: true });
+  await writeFile(url, `${JSON.stringify(data, null, 2)}\n`);
+}
+
+function normalizeAiSummary(value = "") {
+  const text = cleanValue(value)
+    .replace(/^简介\s*[:：]\s*/, "")
+    .replace(/^讲座简介\s*[:：]\s*/, "")
+    .replace(/^总结\s*[:：]\s*/, "")
+    .replace(/^["“”]+|["“”]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (text.length <= AI_SUMMARY_LIMIT) return text;
+  const sliced = text.slice(0, AI_SUMMARY_LIMIT);
+  const punctuation = Math.max(
+    sliced.lastIndexOf("。"),
+    sliced.lastIndexOf("；"),
+    sliced.lastIndexOf("！"),
+    sliced.lastIndexOf("？")
+  );
+  if (punctuation >= 80) return sliced.slice(0, punctuation + 1);
+  return sliced.replace(/[，。；、：:\s]+$/, "");
+}
+
+function aiCanRun() {
+  return Boolean(process.env.CLOUDFLARE_API_TOKEN && process.env.CLOUDFLARE_ACCOUNT_ID && !aiDisabledReason);
+}
+
+async function summarizeWithCloudflareAi(event, sourceText) {
+  if (!aiCanRun()) return "";
+
+  const prompt = [
+    "请把下面的学术讲座资料改写成一段中文简介。",
+    "要求：约150字，不超过180字；只写一段话；准确说明讲座主题、主要内容和听众能了解什么；不要编造源材料没有的信息；不要列表；不要省略号。",
+    "",
+    `讲座标题：${event.title}`,
+    `主讲人：${event.speaker}`,
+    `原始资料：${sourceText}`
+  ].join("\n");
+
+  const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/ai/run/${AI_SUMMARY_MODEL}`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      messages: [
+        {
+          role: "system",
+          content: "你是谨慎的中文学术活动简介编辑，只根据输入材料进行概括。"
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 260,
+      temperature: 0.2
+    })
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || payload.success === false) {
+    const message = payload.errors?.map((error) => error.message).join("; ") || `${response.status} ${response.statusText}`;
+    if (response.status === 401 || response.status === 403) {
+      aiDisabledReason = `Cloudflare Workers AI 权限不可用：${message}`;
+      console.warn(`${aiDisabledReason}；本次后续讲座改用缓存或截断简介。`);
+      return "";
+    }
+    console.warn(`AI summary failed for ${event.sourceUrl}: ${message}`);
+    return "";
+  }
+
+  const result = payload.result || {};
+  const text = result.response || result.text || result.output_text || "";
+  return normalizeAiSummary(text);
+}
+
+async function applySummaries(events) {
+  const cache = await readJsonFile(SUMMARY_CACHE_FILE, {});
+  let changed = false;
+
+  for (const event of events) {
+    const sourceText = cleanValue(event.summarySource || "");
+    const fallback = truncate(sourceText || "源网页暂未识别到课程简介。");
+    const hash = hashText(`${event.title}\n${sourceText}`);
+    const cached = cache[event.sourceUrl];
+
+    if (cached?.hash === hash && cached.summary) {
+      event.summary = cached.summary;
+      continue;
+    }
+
+    const aiSummary = sourceText ? await summarizeWithCloudflareAi(event, sourceText) : "";
+    event.summary = aiSummary || fallback;
+
+    if (aiSummary) {
+      cache[event.sourceUrl] = {
+        hash,
+        summary: aiSummary,
+        model: AI_SUMMARY_MODEL,
+        generatedAt: new Date().toISOString()
+      };
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    await writeJsonFile(SUMMARY_CACHE_FILE, cache);
+  }
+}
+
 function parseDateAndTime(value, item) {
   const notes = [];
   const normalized = normalizeText(value).replace(/\s+/g, " ").replace(/：/g, ":");
@@ -263,6 +397,7 @@ async function parseDetail(item) {
     speaker,
     location,
     format: inferFormat(location),
+    summarySource: summarySource || "源网页暂未识别到课程简介。",
     summary: truncate(summarySource || "源网页暂未识别到课程简介。"),
     notes: parsedTime.notes || []
   };
@@ -485,6 +620,7 @@ async function main() {
     return;
   }
 
+  await applySummaries(events);
   await writeFile(OUTPUT_FILE, renderHtml(events, existingHtml));
   console.log(`Updated ${events.length} lecture events.`);
 }
