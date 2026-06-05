@@ -1,0 +1,12 @@
+{
+  "name": "uestc-xueshujiangzuo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "update": "node scripts/update-lectures.mjs",
+    "deploy": "rm -rf dist && mkdir -p dist && COPYFILE_DISABLE=1 cp index.html dist/index.html && find dist -name '._*' -delete && npx wrangler deploy dist --name uestc-lectures-worker --domain xueshujiangzuo.jasonmumiao.online --compatibility-date 2026-06-05"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
+  }
+}

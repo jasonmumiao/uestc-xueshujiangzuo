@@ -1,0 +1,481 @@
+import { readFile, writeFile } from "node:fs/promises";
+
+const SOURCE_BASE = "https://gr.uestc.edu.cn";
+const LIST_PATH = "/jiaoxue/145";
+const OUTPUT_FILE = new URL("../index.html", import.meta.url);
+const TERM_START = "2026-06-01";
+const UPDATE_CUTOFF = "2026-07-12";
+const MAX_LIST_PAGES = 8;
+const SUMMARY_LIMIT = 180;
+
+const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc";
+const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
+
+const STOP_LABELS = [
+  "讲座时间", "时间", "讲座地点", "地点", "特邀专家", "主讲人", "报告人",
+  "讲座主题", "报告题目", "题目", "内容简介", "报告摘要", "课程简介", "讲座简介",
+  "主讲人简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介",
+  "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "欢迎", "附件"
+];
+
+const WEEKDAYS = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+const PERIOD_LABELS = {
+  morning: "上午",
+  afternoon: "下午",
+  evening: "晚上"
+};
+
+function nowShanghaiDate() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+}
+
+function todayShanghaiDate() {
+  return nowShanghaiDate();
+}
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function decodeEntities(value = "") {
+  return value
+    .replaceAll("&nbsp;", " ")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&ldquo;", "“")
+    .replaceAll("&rdquo;", "”")
+    .replaceAll("&mdash;", "—")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&#39;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
+}
+
+function normalizeText(value = "") {
+  return decodeEntities(value)
+    .replace(/\u3000/g, " ")
+    .replace(/[ \t\r\f]+/g, " ")
+    .replace(/\n\s+/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function stripHtml(html = "") {
+  return normalizeText(html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(?:p|div|h\d|li|tr)>/gi, "\n")
+    .replace(/<[^>]+>/g, ""));
+}
+
+async function fetchText(url, attempt = 1) {
+  const response = await fetch(url, {
+    headers: {
+      "user-agent": "Mozilla/5.0 lecture-updater (+https://xueshujiangzuo.jasonmumiao.online/)"
+    }
+  }).catch((error) => {
+    if (attempt < 3) return null;
+    throw error;
+  });
+
+  if (!response) {
+    await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+    return fetchText(url, attempt + 1);
+  }
+
+  if (!response.ok) {
+    if (attempt < 3) {
+      await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+      return fetchText(url, attempt + 1);
+    }
+    throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+  }
+
+  return response.text();
+}
+
+function parseChineseDate(value) {
+  const normalized = normalizeText(value).replace(/\s+/g, " ");
+  const match = normalized.match(/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?/);
+  if (!match) return null;
+  return `${match[1]}-${match[2].padStart(2, "0")}-${match[3].padStart(2, "0")}`;
+}
+
+function parseListItems(html) {
+  const items = [];
+  const linkRegex = /<a[^>]+href=["']([^"']*\/jiaoxue\/145\/\d+)["'][^>]*>([\s\S]*?)<\/a>[\s\S]{0,360}?((?:20\d{2})年\d{2}月\d{2}日)/g;
+  for (const match of html.matchAll(linkRegex)) {
+    const title = stripHtml(match[2]);
+    const published = parseChineseDate(match[3]);
+    if (!title.includes("交流月") || !title.includes("讲座通知")) continue;
+    items.push({
+      href: match[1].startsWith("http") ? match[1] : `${SOURCE_BASE}${match[1]}`,
+      title,
+      published
+    });
+  }
+
+  return Array.from(new Map(items.map((item) => [item.href, item])).values());
+}
+
+async function collectListItems() {
+  const collected = [];
+  let oldPageCount = 0;
+  for (let page = 1; page <= MAX_LIST_PAGES; page += 1) {
+    const html = await fetchText(`${SOURCE_BASE}${LIST_PATH}?page=${page}`);
+    const items = parseListItems(html);
+    if (!items.length) break;
+    collected.push(...items);
+
+    const hasRecent = items.some((item) => item.published >= TERM_START);
+    oldPageCount = hasRecent ? 0 : oldPageCount + 1;
+    if (oldPageCount >= 2) break;
+  }
+
+  return Array.from(new Map(collected.map((item) => [item.href, item])).values());
+}
+
+function extractBlock(text, labels, stops = STOP_LABELS) {
+  const labelPattern = labels.map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  const startMatch = new RegExp(`(?:^|\\n)\\s*(?:${labelPattern})\\s*[:：]?\\s*`, "i").exec(text);
+  if (!startMatch) return "";
+
+  const start = startMatch.index + startMatch[0].length;
+  const rest = text.slice(start);
+  const stopPattern = stops
+    .filter((label) => !labels.includes(label))
+    .map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|");
+  const stopMatch = new RegExp(`\\n\\s*(?:${stopPattern})\\s*[:：]?\\s*`, "i").exec(rest);
+  const block = stopMatch ? rest.slice(0, stopMatch.index) : rest;
+  return normalizeText(block);
+}
+
+function cleanValue(value = "") {
+  return normalizeText(value)
+    .replace(/^(：|:)/, "")
+    .replace(/^(报告题目|讲座主题|题目)\s*[:：]\s*/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function truncate(value, limit = SUMMARY_LIMIT) {
+  const text = cleanValue(value);
+  if (text.length <= limit) return text;
+  return `${text.slice(0, limit).replace(/[，。；、：:\s]+$/, "")}...`;
+}
+
+function parseDateAndTime(value, item) {
+  const notes = [];
+  const normalized = normalizeText(value).replace(/\s+/g, " ").replace(/：/g, ":");
+  const dateMatch = normalized.match(/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?|(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);
+  if (!dateMatch) return { notes: ["时间未能自动识别"] };
+
+  let year = Number(dateMatch[1] || dateMatch[4]);
+  const month = Number(dateMatch[2] || dateMatch[5]);
+  const day = Number(dateMatch[3] || dateMatch[6]);
+
+  if (item.published?.startsWith("2026-") && year !== 2026 && item.title.includes("第11届")) {
+    notes.push(`源站原文为 ${year} 年 ${month} 月 ${day} 日；本表按 2026 年修正。`);
+    year = 2026;
+  }
+
+  const timeMatch = normalized.match(/(\d{1,2})\s*:\s*(\d{2})(?:\s*(?:-|~|—|–|至)\s*(\d{1,2})\s*:\s*(\d{2}))?/);
+  if (!timeMatch) return { notes: [...notes, "开始时间未能自动识别"] };
+
+  const startMinutes = Number(timeMatch[1]) * 60 + Number(timeMatch[2]);
+  const endMinutes = timeMatch[3]
+    ? Number(timeMatch[3]) * 60 + Number(timeMatch[4])
+    : startMinutes;
+  const date = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  const startTime = `${String(timeMatch[1]).padStart(2, "0")}:${timeMatch[2]}`;
+  const endTime = timeMatch[3] ? `${String(timeMatch[3]).padStart(2, "0")}:${timeMatch[4]}` : "";
+
+  return { date, startMinutes, endMinutes, startTime, endTime, notes };
+}
+
+function periodFromMinutes(minutes) {
+  if (minutes < 12 * 60) return "morning";
+  if (minutes < 18 * 60) return "afternoon";
+  return "evening";
+}
+
+function titleParts(title) {
+  const cleanTitleText = cleanValue(title);
+  const afterBracket = cleanTitleText.replace(/^【[^】]+】/, "");
+  const chineseSplit = afterBracket.indexOf("：");
+  const englishSplit = afterBracket.indexOf(":");
+  const splitIndex = chineseSplit >= 0 && englishSplit >= 0
+    ? Math.min(chineseSplit, englishSplit)
+    : Math.max(chineseSplit, englishSplit);
+  const series = splitIndex >= 0 ? afterBracket.slice(0, splitIndex).trim() : "";
+  const topic = splitIndex >= 0 ? afterBracket.slice(splitIndex + 1).trim() : afterBracket;
+  const schoolMatch = series.match(/^(.+?学院|.+?研究院|.+?中心|.+?部)/);
+  const school = schoolMatch ? schoolMatch[1] : (series || "研究生院");
+  return { school, series, topic };
+}
+
+function inferFormat(location) {
+  return /线上|QQ|腾讯会议|会议号|直播|群课堂/i.test(location) ? "online" : "offline";
+}
+
+function durationText(event) {
+  if (!event.endTime) return "结束时间未注明";
+  const diff = event.endMinutes - event.startMinutes;
+  if (diff > 0) return `约 ${diff} 分钟`;
+  return "结束时间未注明";
+}
+
+function clockText(event) {
+  return event.endTime ? `${event.startTime}-${event.endTime}` : event.startTime;
+}
+
+async function parseDetail(item) {
+  const html = await fetchText(item.href);
+  const text = stripHtml(html);
+  const { school, series, topic } = titleParts(item.title);
+  const timeBlock = extractBlock(text, ["讲座时间", "时间"]);
+  const location = cleanValue(extractBlock(text, ["讲座地点", "地点", "形式", "讲座形式"])) || "待确认";
+  const speaker = cleanValue(extractBlock(text, ["特邀专家", "主讲人", "报告人"])) || "待确认";
+  const summarySource =
+    extractBlock(text, ["内容简介", "报告摘要", "课程简介", "讲座简介"]) ||
+    extractBlock(text, ["讲座主题", "报告题目", "题目"]);
+  const parsedTime = parseDateAndTime(timeBlock, item);
+
+  const event = {
+    sourceUrl: item.href,
+    published: item.published,
+    originalTitle: item.title,
+    school,
+    series: series || "学术交流月讲座",
+    title: topic || item.title,
+    speaker,
+    location,
+    format: inferFormat(location),
+    summary: truncate(summarySource || "源网页暂未识别到课程简介。"),
+    notes: parsedTime.notes || []
+  };
+
+  if (parsedTime.date) {
+    Object.assign(event, {
+      date: parsedTime.date,
+      startMinutes: parsedTime.startMinutes,
+      endMinutes: parsedTime.endMinutes,
+      startTime: parsedTime.startTime,
+      endTime: parsedTime.endTime,
+      period: periodFromMinutes(parsedTime.startMinutes)
+    });
+  }
+
+  return event;
+}
+
+function dateLabel(date) {
+  const parsed = new Date(`${date}T00:00:00+08:00`);
+  return `${Number(date.slice(5, 7))} 月 ${Number(date.slice(8, 10))} 日 · ${WEEKDAYS[parsed.getDay()]}`;
+}
+
+function dateSpan(events) {
+  const dates = events.map((event) => event.date).sort();
+  if (!dates.length) return "暂无";
+  const first = dates[0];
+  const last = dates.at(-1);
+  return `${Number(first.slice(5, 7))}/${Number(first.slice(8, 10))}-${Number(last.slice(5, 7))}/${Number(last.slice(8, 10))}`;
+}
+
+function daySummary(events) {
+  const counts = events.reduce((acc, event) => {
+    acc[event.period] = (acc[event.period] || 0) + 1;
+    return acc;
+  }, {});
+  return ["morning", "afternoon", "evening"]
+    .filter((period) => counts[period])
+    .map((period) => `${PERIOD_LABELS[period]} ${counts[period]} 场`)
+    .join(" · ");
+}
+
+function groupByDate(events) {
+  const map = new Map();
+  for (const event of events) {
+    if (!map.has(event.date)) map.set(event.date, []);
+    map.get(event.date).push(event);
+  }
+  return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
+}
+
+function renderEvent(event) {
+  const isOnline = event.format === "online";
+  const formatText = isOnline ? "线上" : "线下";
+  const locationLabel = isOnline ? "形式" : "地点";
+  const noteHtml = event.notes.map((note) => `<p class="correction">${escapeHtml(note)}</p>`).join("\n            ");
+  return `        <article class="event" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}">
+          <div class="time-cell">
+            <span class="period">${PERIOD_LABELS[event.period]}</span>
+            <strong class="clock">${escapeHtml(clockText(event))}</strong>
+            <div class="duration">${escapeHtml(durationText(event))}</div>
+          </div>
+          <div class="content-cell">
+            <div class="title-row">
+              <span class="school">${escapeHtml(event.school)}</span>
+              <span class="format${isOnline ? " online" : ""}">${formatText}</span>
+            </div>
+            <h3>${escapeHtml(event.title)}</h3>
+            <p class="speaker">${escapeHtml(event.speaker)}</p>
+            <p class="summary">${escapeHtml(event.summary)}</p>
+          </div>
+          <aside class="meta-cell">
+            <p class="meta-line"><strong>${locationLabel}</strong>${escapeHtml(event.location)}</p>
+            <p class="meta-line"><strong>系列</strong>${escapeHtml(event.series)}</p>
+            <a class="source-link" href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">查看源网页</a>
+            ${noteHtml}
+          </aside>
+        </article>`;
+}
+
+function renderDays(events) {
+  return groupByDate(events).map(([date, dayEvents]) => `    <section class="day" data-day-section>
+      <div class="day-heading">
+        <h2>${dateLabel(date)}</h2>
+        <span>${daySummary(dayEvents)}</span>
+      </div>
+      <div class="event-list">
+${dayEvents.map(renderEvent).join("\n\n")}
+      </div>
+    </section>`).join("\n\n");
+}
+
+function extractTagContent(html, tag) {
+  const match = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i").exec(html);
+  if (!match) throw new Error(`Cannot find <${tag}> in existing index.html`);
+  return match[1];
+}
+
+function renderHtml(events, existingHtml) {
+  const style = extractTagContent(existingHtml, "style");
+  const script = extractTagContent(existingHtml, "script");
+  const arrangedDate = todayShanghaiDate();
+  const offlineCount = events.filter((event) => event.format === "offline").length;
+  const onlineCount = events.filter((event) => event.format === "online").length;
+  const notes = events.flatMap((event) => event.notes);
+  const correctionNotice = notes.length
+    ? `      <p class="notice">${escapeHtml(Array.from(new Set(notes)).join(" "))}</p>\n`
+    : "";
+
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>电子科技大学 2026 年学术交流月讲座表</title>
+  <meta name="description" content="电子科技大学研究生院 2026 年第 11 届学术交流月讲座时间、地点、主讲人与内容简介。">
+  <link rel="canonical" href="https://xueshujiangzuo.jasonmumiao.online/">
+  <style>${style}</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="kicker">第 11 届研究生学术交流月</div>
+      <h1>电子科技大学 2026 年学术交流月讲座表</h1>
+      <p class="lead">自动整理研究生院已发布的学术交流月讲座通知，突出日期、时段、地点/线上入口和内容简介，适合手机与桌面快速浏览。</p>
+      <div class="source-row" aria-label="数据来源">
+        <span>数据源：<a href="https://gr.uestc.edu.cn/jiaoxue/145?page=1" target="_blank" rel="noopener">电子科技大学研究生院</a></span>
+        <span>整理时间：${arrangedDate}</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap stats" aria-label="讲座统计">
+    <div class="stat"><strong>${events.length}</strong><span>场已识别学术交流月讲座</span></div>
+    <div class="stat"><strong>${offlineCount}</strong><span>场线下讲座</span></div>
+    <div class="stat"><strong>${onlineCount}</strong><span>场线上讲座</span></div>
+    <div class="stat"><strong>${dateSpan(events)}</strong><span>讲座日期跨度</span></div>
+  </section>
+
+  <div class="controls-band">
+    <div class="wrap controls">
+      <div class="filters" role="group" aria-label="讲座筛选">
+        <button class="filter-button" type="button" data-filter-group="format" data-filter-value="offline" aria-pressed="false">线下</button>
+        <button class="filter-button" type="button" data-filter-group="format" data-filter-value="online" aria-pressed="false">线上</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
+        <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+      </div>
+      <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
+      <div class="range-controls" aria-label="日期和时间筛选">
+        <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="${TERM_START}" max="${UPDATE_CUTOFF}"></label>
+        <label class="field" for="date-end"><span>结束日期</span><input id="date-end" type="date" min="${TERM_START}" max="${UPDATE_CUTOFF}"></label>
+        <label class="field" for="time-start"><span>开始时间</span><input id="time-start" type="time" step="900"></label>
+        <label class="field" for="time-end"><span>结束时间</span><input id="time-end" type="time" step="900"></label>
+        <button class="clear-button" type="button" id="clear-filters">清空筛选</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="notice-stack">
+      <p class="notice good">线下讲座直接按表中地点前往即可，不需要走报名流程；建议提前到场，现场听从学院或工作人员安排。</p>
+      <p class="notice info">请带上《电子科技大学研究生学术活动登记表》用于现场盖章/登记。官方下载：<a href="${STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表</a>；留学生版本：<a href="${INTERNATIONAL_STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表（留学生）</a>。</p>
+${correctionNotice}    </div>
+
+${renderDays(events)}
+
+    <div class="empty-state" id="empty-state">当前筛选没有匹配的讲座。</div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      本页为公开通知整理版，时间地点以源网页后续更新为准。
+    </div>
+  </footer>
+
+  <script>${script}</script>
+</body>
+</html>
+`;
+}
+
+async function main() {
+  if (todayShanghaiDate() > UPDATE_CUTOFF) {
+    console.log(`Update cutoff ${UPDATE_CUTOFF} has passed; no changes made.`);
+    return;
+  }
+
+  const existingHtml = await readFile(OUTPUT_FILE, "utf8");
+  const listItems = await collectListItems();
+  const detailEvents = [];
+
+  for (const item of listItems) {
+    const event = await parseDetail(item);
+    if (!event.date) {
+      console.warn(`Skipped unresolved event time: ${item.title} ${item.href}`);
+      continue;
+    }
+    if (event.date < TERM_START || event.date > UPDATE_CUTOFF) continue;
+    detailEvents.push(event);
+  }
+
+  const events = Array.from(new Map(detailEvents.map((event) => [event.sourceUrl, event])).values())
+    .sort((a, b) => a.date.localeCompare(b.date) || a.startMinutes - b.startMinutes || a.title.localeCompare(b.title, "zh-CN"));
+
+  if (!events.length) {
+    throw new Error("No lecture events were parsed; refusing to overwrite index.html.");
+  }
+
+  await writeFile(OUTPUT_FILE, renderHtml(events, existingHtml));
+  console.log(`Updated ${events.length} lecture events.`);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
