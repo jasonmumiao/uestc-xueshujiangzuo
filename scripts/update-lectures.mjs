@@ -11,6 +11,7 @@ const MAX_LIST_PAGES = 8;
 const SUMMARY_LIMIT = 180;
 const AI_SUMMARY_LIMIT = 180;
 const AI_SUMMARY_MODEL = process.env.AI_SUMMARY_MODEL || "@cf/meta/llama-3.1-8b-instruct";
+const DRY_RUN = process.argv.includes("--dry-run");
 
 const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc";
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
@@ -417,8 +418,9 @@ async function parseDetail(item) {
 }
 
 function dateLabel(date) {
-  const parsed = new Date(`${date}T00:00:00+08:00`);
-  return `${Number(date.slice(5, 7))} 月 ${Number(date.slice(8, 10))} 日 · ${WEEKDAYS[parsed.getDay()]}`;
+  const [year, month, day] = date.split("-").map(Number);
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  return `${month} 月 ${day} 日 · ${WEEKDAYS[weekday]}`;
 }
 
 function dateSpan(events) {
@@ -617,6 +619,11 @@ async function main() {
 
   if (!events.length) {
     console.warn("No lecture events were parsed; keeping existing page.");
+    return;
+  }
+
+  if (DRY_RUN) {
+    console.log(`Dry run parsed ${events.length} lecture events; no files were written.`);
     return;
   }
 
