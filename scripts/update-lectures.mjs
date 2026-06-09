@@ -26,7 +26,8 @@ const STOP_LABELS = [
   "特邀专家", "主讲人", "报告人", "主讲嘉宾",
   "讲座主题", "报告题目", "题目", "讲座内容简介", "讲座内容", "报告内容", "内容简介", "报告摘要", "课程简介", "讲座简介",
   "主讲人简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介",
-  "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "欢迎", "附件"
+  "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "欢迎", "附件",
+  "上一篇", "下一篇", "友情链接"
 ];
 
 const WEEKDAYS = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -511,7 +512,9 @@ function renderEvent(event) {
   const isOnline = event.format === "online";
   const formatText = isOnline ? "线上" : "线下";
   const locationLabel = isOnline ? "形式" : "地点";
-  const noteHtml = event.notes.map((note) => `<p class="correction">${escapeHtml(note)}</p>`).join("\n            ");
+  const noteHtml = event.notes.length
+    ? `\n            ${event.notes.map((note) => `<p class="correction">${escapeHtml(note)}</p>`).join("\n            ")}`
+    : "";
   return `        <article class="event" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}">
           <div class="time-cell">
             <span class="period">${PERIOD_LABELS[event.period]}</span>
@@ -530,8 +533,7 @@ function renderEvent(event) {
           <aside class="meta-cell">
             <p class="meta-line"><strong>${locationLabel}</strong>${escapeHtml(event.location)}</p>
             <p class="meta-line"><strong>系列</strong>${escapeHtml(event.series)}</p>
-            <a class="source-link" href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">查看源网页</a>
-            ${noteHtml}
+            <a class="source-link" href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">查看源网页</a>${noteHtml}
           </aside>
         </article>`;
 }
