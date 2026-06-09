@@ -660,6 +660,126 @@
         font-size: 18px;
       }
     }
+
+    .compact-view .day {
+      margin-top: 18px;
+    }
+
+    .compact-view .day-heading {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom-width: 1px;
+    }
+
+    .compact-view .day-heading h2 {
+      font-size: 18px;
+    }
+
+    .compact-view .day-heading span {
+      font-size: 12px;
+    }
+
+    .compact-view .event-list {
+      gap: 6px;
+    }
+
+    .compact-view .event {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr) minmax(180px, 0.72fr);
+      min-height: 0;
+      border-radius: 6px;
+      box-shadow: none;
+    }
+
+    .compact-view .time-cell {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      padding: 8px 10px 8px 14px;
+      border-right: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .compact-view .time-cell::before {
+      width: 4px;
+    }
+
+    .compact-view .period,
+    .compact-view .duration {
+      display: none;
+    }
+
+    .compact-view .clock {
+      font-size: 15px;
+      line-height: 1.25;
+      white-space: normal;
+      word-break: keep-all;
+    }
+
+    .compact-view .content-cell,
+    .compact-view .meta-cell {
+      min-width: 0;
+      padding: 8px 10px;
+    }
+
+    .compact-view h3 {
+      font-size: 15px;
+      line-height: 1.28;
+    }
+
+    .compact-view .meta-cell {
+      display: flex;
+      align-items: center;
+      border-left: 1px solid var(--line);
+      border-top: 0;
+      background: #fbfcfe;
+    }
+
+    .compact-view .location-line {
+      margin: 0;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .compact-view .location-line strong {
+      display: inline;
+      margin: 0 6px 0 0;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .compact-view .event {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+      }
+
+      .compact-view .time-cell {
+        grid-row: span 2;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+      }
+
+      .compact-view .content-cell {
+        padding: 8px 10px 3px;
+      }
+
+      .compact-view .meta-cell {
+        grid-column: 2;
+        padding: 0 10px 8px;
+        border-left: 0;
+        border-top: 0;
+      }
+
+      .compact-view h3 {
+        font-size: 14px;
+      }
+
+      .compact-view .clock {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
