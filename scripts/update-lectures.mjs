@@ -601,10 +601,13 @@ function renderHtml(events, existingHtml) {
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
-        <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
-        <button class="view-button" type="button" id="compact-view" aria-pressed="false">简约视图</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
+      <div class="system-controls" role="group" aria-label="显示设置">
+        <span class="system-label">显示设置</span>
+        <button class="setting-button" type="button" id="hide-ended" aria-pressed="true">已结束：隐藏</button>
+        <button class="setting-button" type="button" id="compact-view" aria-pressed="false">视图：完整</button>
+      </div>
       <div class="range-controls" aria-label="日期和时间筛选">
         <label class="field search-field" for="lecture-search"><span>搜索</span><input id="lecture-search" type="search" placeholder="标题、学院、主讲人、地点、内容"></label>
         <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="${TERM_START}" max="${UPDATE_CUTOFF}"></label>

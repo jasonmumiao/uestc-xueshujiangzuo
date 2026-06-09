@@ -161,7 +161,6 @@
     }
 
     .filter-button,
-    .view-button,
     .clear-button {
       min-height: 38px;
       padding: 7px 13px;
@@ -176,10 +175,48 @@
     }
 
     .filter-button[aria-pressed="true"],
-    .view-button[aria-pressed="true"] {
+    .setting-button[aria-pressed="true"] {
       border-color: var(--brand);
       background: var(--brand-soft);
       color: var(--brand);
+    }
+
+    .system-controls {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(238, 243, 248, 0.74);
+    }
+
+    .system-label {
+      margin-right: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .setting-button {
+      min-height: 34px;
+      padding: 5px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .setting-button[aria-pressed="true"] {
+      border-color: var(--teal);
+      background: var(--teal-soft);
+      color: var(--teal);
     }
 
     .range-controls {
@@ -617,12 +654,24 @@
       }
 
       .filter-button,
-      .view-button,
       .clear-button {
         width: 100%;
         min-width: 0;
         padding-inline: 7px;
         font-size: 13px;
+      }
+
+      .system-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .system-label {
+        grid-column: 1 / -1;
+      }
+
+      .setting-button {
+        width: 100%;
       }
 
       .day-heading {
@@ -810,10 +859,13 @@
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
-        <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
-        <button class="view-button" type="button" id="compact-view" aria-pressed="false">简约视图</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">23</span> / 23 场</div>
+      <div class="system-controls" role="group" aria-label="显示设置">
+        <span class="system-label">显示设置</span>
+        <button class="setting-button" type="button" id="hide-ended" aria-pressed="true">已结束：隐藏</button>
+        <button class="setting-button" type="button" id="compact-view" aria-pressed="false">视图：完整</button>
+      </div>
       <div class="range-controls" aria-label="日期和时间筛选">
         <label class="field search-field" for="lecture-search"><span>搜索</span><input id="lecture-search" type="search" placeholder="标题、学院、主讲人、地点、内容"></label>
         <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="2026-06-01" max="2026-07-12"></label>
@@ -1553,16 +1605,36 @@
       emptyState.classList.toggle("is-visible", count === 0);
     }
 
+    function setHideEnded(enabled) {
+      hideEndedButton.setAttribute("aria-pressed", String(enabled));
+      hideEndedButton.textContent = enabled ? "已结束：隐藏" : "已结束：显示";
+      try {
+        localStorage.setItem("lectures-hide-ended", String(enabled));
+      } catch (error) {
+        // localStorage may be unavailable in some embedded browsers.
+      }
+      applyFilters();
+    }
+
     function setCompactView(enabled) {
       document.body.classList.toggle("compact-view", enabled);
       compactViewButton.setAttribute("aria-pressed", String(enabled));
-      compactViewButton.textContent = enabled ? "完整视图" : "简约视图";
+      compactViewButton.textContent = enabled ? "视图：简约" : "视图：完整";
       try {
         localStorage.setItem("lectures-compact-view", String(enabled));
       } catch (error) {
         // localStorage may be unavailable in some embedded browsers.
       }
     }
+
+    let savedHideEnded = true;
+    try {
+      const storedHideEnded = localStorage.getItem("lectures-hide-ended");
+      savedHideEnded = storedHideEnded === null ? true : storedHideEnded === "true";
+    } catch (error) {
+      savedHideEnded = true;
+    }
+    setHideEnded(savedHideEnded);
 
     let savedCompactView = false;
     try {
@@ -1582,6 +1654,11 @@
 
     [searchInput, dateStartInput, dateEndInput, timeStartInput, timeEndInput].forEach((input) => {
       input.addEventListener("input", applyFilters);
+    });
+
+    hideEndedButton.addEventListener("click", () => {
+      const enabled = hideEndedButton.getAttribute("aria-pressed") !== "true";
+      setHideEnded(enabled);
     });
 
     compactViewButton.addEventListener("click", () => {
