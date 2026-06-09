@@ -161,6 +161,7 @@
     }
 
     .filter-button,
+    .view-button,
     .clear-button {
       min-height: 38px;
       padding: 7px 13px;
@@ -174,7 +175,8 @@
       cursor: pointer;
     }
 
-    .filter-button[aria-pressed="true"] {
+    .filter-button[aria-pressed="true"],
+    .view-button[aria-pressed="true"] {
       border-color: var(--brand);
       background: var(--brand-soft);
       color: var(--brand);
@@ -469,6 +471,41 @@
       font-weight: 800;
     }
 
+    .compact-view .title-row,
+    .compact-view .speaker,
+    .compact-view .summary,
+    .compact-view .series-line,
+    .compact-view .source-link,
+    .compact-view .correction,
+    .compact-view .duration {
+      display: none;
+    }
+
+    .compact-view .event {
+      grid-template-columns: 118px minmax(0, 1.15fr) minmax(220px, 0.85fr);
+    }
+
+    .compact-view .time-cell,
+    .compact-view .content-cell,
+    .compact-view .meta-cell {
+      padding: 13px 14px;
+    }
+
+    .compact-view h3 {
+      font-size: 18px;
+    }
+
+    .compact-view .location-line {
+      margin: 0;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .compact-view .location-line strong {
+      display: inline;
+      margin: 0 6px 0 0;
+    }
+
     .correction {
       margin: 10px 0 0;
       padding: 10px 11px;
@@ -580,6 +617,7 @@
       }
 
       .filter-button,
+      .view-button,
       .clear-button {
         width: 100%;
         min-width: 0;
@@ -653,6 +691,7 @@
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
         <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
+        <button class="view-button" type="button" id="compact-view" aria-pressed="false">简约视图</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">23</span> / 23 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
@@ -670,6 +709,7 @@
     <div class="notice-stack">
       <p class="notice good">线下讲座直接按表中地点前往即可，不需要走报名流程；建议提前到场，现场听从学院或工作人员安排。</p>
       <p class="notice info">请带上《电子科技大学研究生学术活动登记表》用于现场盖章/登记。官方下载：<a href="https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc" target="_blank" rel="noopener">研究生学术活动登记表</a>；留学生版本：<a href="https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx" target="_blank" rel="noopener">研究生学术活动登记表（留学生）</a>。</p>
+      <p class="notice info">学术交流月讲座要求参加 2 场及以上；与其他学术活动合计要求达到 10 场及以上。</p>
       <p class="notice">源站原文为 2024 年 6 月 25 日；本表按 2026 年修正。</p>
     </div>
 
@@ -695,8 +735,8 @@
             <p class="summary">本讲座由Kyung Chun Kim教授主讲，主题为复杂气-水两相流4D测量的挑战。讲座将探讨在环境和工业过程中普遍存在的复杂气-水两相流的测量难题。由于界面速度高、强湍流、气泡聚并和破碎以及光学可达性问题，传统的测量技术难以捕捉这些流动的瞬态和体积特性。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>清水河校区品学楼B103</p>
-            <p class="meta-line"><strong>系列</strong>航空航天学院系列讲座一</p>
+            <p class="meta-line location-line"><strong>地点</strong>清水河校区品学楼B103</p>
+            <p class="meta-line series-line"><strong>系列</strong>航空航天学院系列讲座一</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14580" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -725,8 +765,8 @@
             <p class="summary">北京大学郭宗明教授将于此次讲座中探讨VR+AI视频传输的关键技术。随着网络和视频技术的发展，虚拟现实技术的普及日渐加速，但高码率、有限网络资源和网络延迟仍然成为虚拟现实视频的广泛使用的主要障碍。郭教授将重点介绍QoE驱动的视点自适应传输框架和挑战，包括QoE传输模型、视点预测、全景视频映射和分块传输等关键技术。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>沙河校区主楼中324</p>
-            <p class="meta-line"><strong>系列</strong>信息与软件工程学院系列讲座一</p>
+            <p class="meta-line location-line"><strong>地点</strong>沙河校区主楼中324</p>
+            <p class="meta-line series-line"><strong>系列</strong>信息与软件工程学院系列讲座一</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14564" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -747,8 +787,8 @@
             <p class="summary">中国空气动力研究与发展中心是为适应我国航空航天事业和国民经济发展需要，由钱学森、郭永怀规划，经毛主席批准，于1968年2月组建，50余年建设超过50座大型风洞设施设备，专注于航空航天飞行器及汽车、高速列车、风工程的试验和研究。本讲座围绕风洞试验和风洞设计，聚焦于最新编写的《常规风洞设计规范》的内容和应用，介绍相关的基础概念、基本方法和实践应用。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼A105</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座1</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼A105</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座1</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14601" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -769,8 +809,8 @@
             <p class="summary">张存金教授的讲座《神经科学领域重大进展》将深入探讨神经系统中的一系列高致残、高致死性疾病的国际现状和临床危害。讲座将从疾病诱因和治疗的角度出发，解析疾病机制，发现新型研发靶点的科学方法，以及目前新型的神经治疗新兴技术的应用和对本领域的影响。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>沙河校区二教306</p>
-            <p class="meta-line"><strong>系列</strong>医学院系列讲座一</p>
+            <p class="meta-line location-line"><strong>地点</strong>沙河校区二教306</p>
+            <p class="meta-line series-line"><strong>系列</strong>医学院系列讲座一</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14570" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -799,8 +839,8 @@
             <p class="summary">当前卫星互联网发展迅猛，低轨卫星星座布局竞争激烈，正从通信保障向万物智联演进。产业创新聚焦芯片小型化、星上处理智能化，与5G/6G深度融合，催生新业态，带动航天、通信等多领域协同共进。本讲座将报告卫星互联网发展趋势与产业创新动态。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
-            <p class="meta-line"><strong>系列</strong>光电科学与工程学院系列讲座1</p>
+            <p class="meta-line location-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>光电科学与工程学院系列讲座1</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14595" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -821,8 +861,8 @@
             <p class="summary">马汉彬教授的讲座《半导体阵列生物芯片及微纳样本二维操控》将系统介绍半导体阵列生物芯片及微纳样本二维操控领域的研究进展。讲座的核心内容是有源数字微流控（AM-DMF）技术，该技术通过将显示面板薄膜晶体管工艺跨界应用于生物芯片设计，研制出系列规模递进、性能跨越的有源电极阵列。这种技术能够实现从百级到万级微纳液滴的独立并行操控，并将反应体积压缩至皮升级。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>沙河校区二教306</p>
-            <p class="meta-line"><strong>系列</strong>医学院系列讲座四</p>
+            <p class="meta-line location-line"><strong>地点</strong>沙河校区二教306</p>
+            <p class="meta-line series-line"><strong>系列</strong>医学院系列讲座四</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14573" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -843,8 +883,8 @@
             <p class="summary">本次讲座将深入探讨人工智能在量化金融中的应用，重点讲解近期深度学习在复杂金融衍生品定价中的前沿应用。在真实的金融衍生品交易中，衍生品价格是时间、状态变量以及模型与合约参数的复杂函数。传统的数值计算方法只能针对固定参数逐一评估衍生品价格，当需要进行大规模的高频估值或实时参数校准时，这种方法会遭遇严重的算力瓶颈与时间损耗。为了突破这一计算效率限制，本次讲座将围绕...</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>电子科技大学清水河校区6号科研楼A344</p>
-            <p class="meta-line"><strong>系列</strong>数学科学学院系列讲座1</p>
+            <p class="meta-line location-line"><strong>地点</strong>电子科技大学清水河校区6号科研楼A344</p>
+            <p class="meta-line series-line"><strong>系列</strong>数学科学学院系列讲座1</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14593" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -873,8 +913,8 @@
             <p class="summary">钱浩教授的讲座《中华传统文化经典导读：《周易》文本简介》将深入探讨《周易》的文本组成、经传的形成过程以及易学思想的演进。通过讲座，听众将能够了解《周易》文本的历史背景、结构特征和思想内容。同时，钱教授还将介绍近代以来对《周易》文本的重要考古发现及其对研究的影响。通过这次讲座，听众将能够全面了解《周易》作为中华传统文化经典的重要性和价值。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>沙河校区二教306</p>
-            <p class="meta-line"><strong>系列</strong>医学院系列讲座五</p>
+            <p class="meta-line location-line"><strong>地点</strong>沙河校区二教306</p>
+            <p class="meta-line series-line"><strong>系列</strong>医学院系列讲座五</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14574" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -895,8 +935,8 @@
             <p class="summary">本讲座从半导体器件的分类入手，引入集成电路芯片的制造工艺流程及封装的功能和作用，总结了集成电路封装技术的发展历程，详细列举了先进封装技术和传统封装的发展，提出了这两类封装存在的问题及攻克方向。最后分享天水华天科技股份有限公司集成电路封装技术成果。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
-            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座1</p>
+            <p class="meta-line location-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>集成电路科学与工程学院系列讲座1</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14583" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -925,8 +965,8 @@
             <p class="summary">国产通用CPU在关键技术领域取得了重大突破，成功攻克了片上并行微处理器体系结构等难题，并已实现高性能通用CPU的量产，为信息产业的稳健发展奠定了坚实基础。以下是讲座简介： 1. 计算机组成与体系结构的发展趋势； 2. 国产CPU发展的紧迫性与必要性； 3. 信创产业的发展历程及国产CPU的发展路线图； 4. 国产通算和智算芯片发展中面临的挑战。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
-            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座2</p>
+            <p class="meta-line location-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>集成电路科学与工程学院系列讲座2</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14584" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -955,8 +995,8 @@
             <p class="summary">Inertial dynamics as classical models in mechanics describe conversion and dissipation of energy in a class of mechanic systems, which are typically second-order differential equat...</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>电子科技大学清水河校区6号科研楼A344</p>
-            <p class="meta-line"><strong>系列</strong>数学科学学院系列讲座2</p>
+            <p class="meta-line location-line"><strong>地点</strong>电子科技大学清水河校区6号科研楼A344</p>
+            <p class="meta-line series-line"><strong>系列</strong>数学科学学院系列讲座2</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14594" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -977,8 +1017,8 @@
             <p class="summary">人工智能发展的简要介绍包括：2012年深度神经网络在 ImageNet 图像识别竞赛中取得突破性胜利，以及2016年 AlphaGo 战胜围棋世界冠军等重要里程碑。算法在人工智能中发挥着至关重要的作用。探讨人工智能对当今社会方方面面的影响。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼A105</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座3</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼A105</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座3</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14603" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -999,8 +1039,8 @@
             <p class="summary">陈新建教授将在眼科医疗AI的技术前沿与学科交叉创新讲座中分享他在人工智能与眼科医疗交叉领域的研究经验和成果。讲座将重点介绍该领域的学术前沿、技术突破和实践经验，为研究生提供学术探索的指引。通过分享重点项目成果和学术积累，陈教授将为听众提供一个全面了解眼科医疗AI技术发展的平台，了解其应用前景和挑战，进而为研究生提供学术和职业发展的参考。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>形式</strong>线上讲座-QQ群课堂</p>
-            <p class="meta-line"><strong>系列</strong>医学院系列讲座二</p>
+            <p class="meta-line location-line"><strong>形式</strong>线上讲座-QQ群课堂</p>
+            <p class="meta-line series-line"><strong>系列</strong>医学院系列讲座二</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14571" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1029,8 +1069,8 @@
             <p class="summary">本报告旨在构建一种非凸NMPC方法。通过设计降亏格（reduced-genus）方法与映射机制，将复杂场景中轮式移动机器人的非凸可行域映射为凸可行域。在该映射后的凸可行域基础上，构建状态预测模型与性能指标，从而保证基于映射的非凸NMPC方法的可行性与稳定性。构建一个非凸NMPC框架，实现非结构化复杂动态多障碍环境下轮式移动机器人的高效控制。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼105教室</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座4</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼105教室</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座4</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14604" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1051,8 +1091,8 @@
             <p class="summary">本讲座将围绕气体传感基本原理、气固相界面原位表征方法、传感新机理和选择性调控等方面，系统介绍最新研究进展。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
-            <p class="meta-line"><strong>系列</strong>光电科学与工程学院系列讲座2</p>
+            <p class="meta-line location-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>光电科学与工程学院系列讲座2</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14596" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1081,8 +1121,8 @@
             <p class="summary">本讲座将报告团队在光电子技术方向的研究进展及与人工智能交叉融合的最新工作，并结合行业发展趋势，与同学们探讨研究生阶段的学业规划。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
-            <p class="meta-line"><strong>系列</strong>光电科学与工程学院系列讲座3</p>
+            <p class="meta-line location-line"><strong>地点</strong>清水河校区四号科研楼B区一楼报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>光电科学与工程学院系列讲座3</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14597" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1103,8 +1143,8 @@
             <p class="summary">重点介绍集成电路概念及其应用、集成电路工艺流程及装备、集成电路测试行业及测试装备以及面临的机遇与未来挑战。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼A104</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座2</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼A104</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座2</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14602" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1125,8 +1165,8 @@
             <p class="summary">Significant recent advances in unmanned aerial vehicles calls for convenient platforms to support experiments and demonstrations. Unmanned aerial vehicles such as quad-rotors and m...</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼105教室</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座5</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼105教室</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座5</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14605" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1155,8 +1195,8 @@
             <p class="summary">水中进行搜索和救援是高成本且困难的。使用自主机器人平台可以提高搜救效率降低危险。受水生动物在水中的自主集体觅食行为的启发，开发了基于控制理论和机器人技术的生物</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>立人楼105教室</p>
-            <p class="meta-line"><strong>系列</strong>自动化工程学院系列讲座6</p>
+            <p class="meta-line location-line"><strong>地点</strong>立人楼105教室</p>
+            <p class="meta-line series-line"><strong>系列</strong>自动化工程学院系列讲座6</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14606" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1177,8 +1217,8 @@
             <p class="summary">本次讲座将深度解析日本射频器件产业的兴衰历程。通过剖析约 20 年前在全球射频器件领域占据绝对领先地位的日本，如今却几乎在全球市场中失去份额的背后原因，再介绍新日本无线株式会社（NJR）凭借自主理念走出行业困境的应对策略，希望能为未来投身该领域的广大青年从业者提供参考与借鉴。 本讲座谨献给有志于深耕射频器件行业的青年朋友们。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>品学楼B111</p>
-            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座3</p>
+            <p class="meta-line location-line"><strong>地点</strong>品学楼B111</p>
+            <p class="meta-line series-line"><strong>系列</strong>集成电路科学与工程学院系列讲座3</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14585" target="_blank" rel="noopener">查看源网页</a>
             <p class="correction">源站原文为 2024 年 6 月 25 日；本表按 2026 年修正。</p>
           </aside>
@@ -1200,8 +1240,8 @@
             <p class="summary">李滚教授的讲座《矛盾论视角下的红楼情感动力学刍议》以毛泽东主席《矛盾论》为哲学内核，探讨了《红楼梦》中情感动力学的辩证逻辑。通过借鉴物理学中的四大基本相互作用和动力学系统的基本概念，讲座重新窥视了《红楼梦》中有情天下的毁灭及矛盾的变化。讲座分析了宝黛的“情”与封建的“礼”的矛盾运动，探讨了贾府熵增导致的必然毁灭，以及家族兴衰理乱形成的巨大“场”。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>清水河校区品学楼B203</p>
-            <p class="meta-line"><strong>系列</strong>航空航天学院系列讲座二</p>
+            <p class="meta-line location-line"><strong>地点</strong>清水河校区品学楼B203</p>
+            <p class="meta-line series-line"><strong>系列</strong>航空航天学院系列讲座二</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14582" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1230,8 +1270,8 @@
             <p class="summary">王晨辉教授的讲座《抗肿瘤免疫治疗-从理论到实践》将系统地介绍抗肿瘤免疫治疗的核心理论与临床转化进展。讲座将围绕肿瘤免疫微环境、免疫检查点调控机制及细胞治疗的策略展开，重点解析抗体药物与细胞治疗从机制研究到临床应用的关键路径。通过结合典型案例探讨疗效提升与毒副反应控制，讲座旨在帮助研究生建立从基础研究到转化医学的整体认知框架，提升科研设计与创新能力。</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>形式</strong>线上讲座-QQ群课堂</p>
-            <p class="meta-line"><strong>系列</strong>医学院系列讲座三</p>
+            <p class="meta-line location-line"><strong>形式</strong>线上讲座-QQ群课堂</p>
+            <p class="meta-line series-line"><strong>系列</strong>医学院系列讲座三</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14572" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1260,8 +1300,8 @@
             <p class="summary">当前，后摩尔时代的半导体产业正经历深刻变革，超大规模集成电路与系统级芯片的设计复杂度呈指数级攀升。在此背景下，数字验证技术不仅是决定芯片流片成败的关键壁垒，更是驱动整个集成电路设计方法学迭代的核心引擎。 本次讲座立足微电子行业前沿，旨在全景剖析现代数字芯片验证技术的演进脉络、技术瓶颈与未来范式。讲座将围绕以下四大核心议题展开深入探讨： 验证技术的发展与演进...</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
-            <p class="meta-line"><strong>系列</strong>集成电路科学与工程学院系列讲座4</p>
+            <p class="meta-line location-line"><strong>地点</strong>国际创新中心B栋504报告厅</p>
+            <p class="meta-line series-line"><strong>系列</strong>集成电路科学与工程学院系列讲座4</p>
             <a class="source-link" href="https://gr.uestc.edu.cn/jiaoxue/145/14586" target="_blank" rel="noopener">查看源网页</a>
           </aside>
         </article>
@@ -1289,6 +1329,7 @@
     const timeEndInput = document.getElementById("time-end");
     const clearButton = document.getElementById("clear-filters");
     const hideEndedButton = document.getElementById("hide-ended");
+    const compactViewButton = document.getElementById("compact-view");
     const searchInput = document.getElementById("lecture-search");
 
     function selectedValues(group) {
@@ -1393,6 +1434,25 @@
       emptyState.classList.toggle("is-visible", count === 0);
     }
 
+    function setCompactView(enabled) {
+      document.body.classList.toggle("compact-view", enabled);
+      compactViewButton.setAttribute("aria-pressed", String(enabled));
+      compactViewButton.textContent = enabled ? "完整视图" : "简约视图";
+      try {
+        localStorage.setItem("lectures-compact-view", String(enabled));
+      } catch (error) {
+        // localStorage may be unavailable in some embedded browsers.
+      }
+    }
+
+    let savedCompactView = false;
+    try {
+      savedCompactView = localStorage.getItem("lectures-compact-view") === "true";
+    } catch (error) {
+      savedCompactView = false;
+    }
+    setCompactView(savedCompactView);
+
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         const pressed = button.getAttribute("aria-pressed") === "true";
@@ -1403,6 +1463,11 @@
 
     [searchInput, dateStartInput, dateEndInput, timeStartInput, timeEndInput].forEach((input) => {
       input.addEventListener("input", applyFilters);
+    });
+
+    compactViewButton.addEventListener("click", () => {
+      const enabled = compactViewButton.getAttribute("aria-pressed") !== "true";
+      setCompactView(enabled);
     });
 
     clearButton.addEventListener("click", () => {

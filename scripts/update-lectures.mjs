@@ -531,8 +531,8 @@ function renderEvent(event) {
             <p class="summary">${escapeHtml(event.summary)}</p>
           </div>
           <aside class="meta-cell">
-            <p class="meta-line"><strong>${locationLabel}</strong>${escapeHtml(event.location)}</p>
-            <p class="meta-line"><strong>系列</strong>${escapeHtml(event.series)}</p>
+            <p class="meta-line location-line"><strong>${locationLabel}</strong>${escapeHtml(event.location)}</p>
+            <p class="meta-line series-line"><strong>系列</strong>${escapeHtml(event.series)}</p>
             <a class="source-link" href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">查看源网页</a>${noteHtml}
           </aside>
         </article>`;
@@ -606,6 +606,7 @@ function renderHtml(events, existingHtml) {
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
         <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
+        <button class="view-button" type="button" id="compact-view" aria-pressed="false">简约视图</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
@@ -623,6 +624,7 @@ function renderHtml(events, existingHtml) {
     <div class="notice-stack">
       <p class="notice good">线下讲座直接按表中地点前往即可，不需要走报名流程；建议提前到场，现场听从学院或工作人员安排。</p>
       <p class="notice info">请带上《电子科技大学研究生学术活动登记表》用于现场盖章/登记。官方下载：<a href="${STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表</a>；留学生版本：<a href="${INTERNATIONAL_STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表（留学生）</a>。</p>
+      <p class="notice info">学术交流月讲座要求参加 2 场及以上；与其他学术活动合计要求达到 10 场及以上。</p>
 ${correctionNotice}    </div>
 
 ${renderDays(events)}
