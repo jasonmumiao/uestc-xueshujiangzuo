@@ -188,6 +188,10 @@
       align-items: end;
     }
 
+    .search-field {
+      grid-column: 1 / -1;
+    }
+
     .field {
       display: grid;
       gap: 4px;
@@ -652,6 +656,7 @@
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">23</span> / 23 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
+        <label class="field search-field" for="lecture-search"><span>搜索</span><input id="lecture-search" type="search" placeholder="标题、学院、主讲人、地点、内容"></label>
         <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="2026-06-01" max="2026-07-12"></label>
         <label class="field" for="date-end"><span>结束日期</span><input id="date-end" type="date" min="2026-06-01" max="2026-07-12"></label>
         <label class="field" for="time-start"><span>开始时间</span><input id="time-start" type="time" step="900"></label>
@@ -1284,6 +1289,7 @@
     const timeEndInput = document.getElementById("time-end");
     const clearButton = document.getElementById("clear-filters");
     const hideEndedButton = document.getElementById("hide-ended");
+    const searchInput = document.getElementById("lecture-search");
 
     function selectedValues(group) {
       return buttons
@@ -1302,6 +1308,23 @@
       if (a !== null && b !== null && a > b) return [b, a];
       return [a, b];
     }
+
+    function normalizeSearch(value) {
+      return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function searchableText(event) {
+      const dayTitle = event.closest("[data-day-section]")?.querySelector("h2")?.textContent || "";
+      return normalizeSearch([
+        event.textContent,
+        dayTitle,
+        event.dataset.date,
+        event.dataset.format,
+        event.dataset.period
+      ].join(" "));
+    }
+
+    const searchIndex = new Map(events.map((event) => [event, searchableText(event)]));
 
     function getShanghaiNow() {
       const parts = new Intl.DateTimeFormat("en-CA", {
@@ -1330,7 +1353,7 @@
       return Number(event.dataset.end) < now.minutes;
     }
 
-    function matchesCurrentFilters(event, now) {
+    function matchesCurrentFilters(event, now, searchTerms) {
       const formats = selectedValues("format");
       const periods = selectedValues("period");
       const [timeStart, timeEnd] = normalizedRange(minutesFromTime(timeStartInput.value), minutesFromTime(timeEndInput.value));
@@ -1340,6 +1363,7 @@
       const eventEnd = Number(event.dataset.end);
       const hideEnded = hideEndedButton?.getAttribute("aria-pressed") === "true";
 
+      if (searchTerms.length && !searchTerms.every((term) => searchIndex.get(event).includes(term))) return false;
       if (hideEnded && isEnded(event, now)) return false;
       if (formats.length && !formats.includes(event.dataset.format)) return false;
       if (periods.length && !periods.includes(event.dataset.period)) return false;
@@ -1353,8 +1377,9 @@
     function applyFilters() {
       let count = 0;
       const now = getShanghaiNow();
+      const searchTerms = normalizeSearch(searchInput.value).split(" ").filter(Boolean);
       events.forEach((event) => {
-        const visible = matchesCurrentFilters(event, now);
+        const visible = matchesCurrentFilters(event, now, searchTerms);
         event.hidden = !visible;
         if (visible) count += 1;
       });
@@ -1376,7 +1401,7 @@
       });
     });
 
-    [dateStartInput, dateEndInput, timeStartInput, timeEndInput].forEach((input) => {
+    [searchInput, dateStartInput, dateEndInput, timeStartInput, timeEndInput].forEach((input) => {
       input.addEventListener("input", applyFilters);
     });
 
@@ -1386,6 +1411,7 @@
       dateEndInput.value = "";
       timeStartInput.value = "";
       timeEndInput.value = "";
+      searchInput.value = "";
       applyFilters();
     });
   </script>

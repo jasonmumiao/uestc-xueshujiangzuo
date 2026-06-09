@@ -609,6 +609,7 @@ function renderHtml(events, existingHtml) {
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
+        <label class="field search-field" for="lecture-search"><span>搜索</span><input id="lecture-search" type="search" placeholder="标题、学院、主讲人、地点、内容"></label>
         <label class="field" for="date-start"><span>开始日期</span><input id="date-start" type="date" min="${TERM_START}" max="${UPDATE_CUTOFF}"></label>
         <label class="field" for="date-end"><span>结束日期</span><input id="date-end" type="date" min="${TERM_START}" max="${UPDATE_CUTOFF}"></label>
         <label class="field" for="time-start"><span>开始时间</span><input id="time-start" type="time" step="900"></label>
