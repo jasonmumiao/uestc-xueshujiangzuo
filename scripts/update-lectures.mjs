@@ -17,8 +17,9 @@ const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
 
 const STOP_LABELS = [
-  "讲座时间", "时间", "讲座地点", "地点", "特邀专家", "主讲人", "报告人",
-  "讲座主题", "报告题目", "题目", "内容简介", "报告摘要", "课程简介", "讲座简介",
+  "讲座时间", "报告时间", "活动时间", "时间", "讲座地点", "报告地点", "活动地点", "地点",
+  "特邀专家", "主讲人", "报告人", "主讲嘉宾",
+  "讲座主题", "报告题目", "题目", "讲座内容简介", "讲座内容", "报告内容", "内容简介", "报告摘要", "课程简介", "讲座简介",
   "主讲人简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介",
   "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "欢迎", "附件"
 ];
@@ -314,28 +315,43 @@ async function applySummaries(events) {
 function parseDateAndTime(value, item) {
   const notes = [];
   const normalized = normalizeText(value).replace(/\s+/g, " ").replace(/：/g, ":");
-  const dateMatch = normalized.match(/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?|(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);
-  if (!dateMatch) return { notes: ["时间未能自动识别"] };
+  const fullDateMatch = normalized.match(/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?|(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);
+  const shortDateMatch = fullDateMatch ? null : normalized.match(/(?:^|[^\d])(\d{1,2})\s*月\s*(\d{1,2})\s*日?/);
+  if (!fullDateMatch && !shortDateMatch) return { notes: ["时间未能自动识别"] };
 
-  let year = Number(dateMatch[1] || dateMatch[4]);
-  const month = Number(dateMatch[2] || dateMatch[5]);
-  const day = Number(dateMatch[3] || dateMatch[6]);
+  let year = fullDateMatch
+    ? Number(fullDateMatch[1] || fullDateMatch[4])
+    : Number(item.published?.slice(0, 4) || TERM_START.slice(0, 4));
+  const month = fullDateMatch ? Number(fullDateMatch[2] || fullDateMatch[5]) : Number(shortDateMatch[1]);
+  const day = fullDateMatch ? Number(fullDateMatch[3] || fullDateMatch[6]) : Number(shortDateMatch[2]);
 
   if (item.published?.startsWith("2026-") && year !== 2026 && item.title.includes("第11届")) {
     notes.push(`源站原文为 ${year} 年 ${month} 月 ${day} 日；本表按 2026 年修正。`);
     year = 2026;
   }
 
-  const timeMatch = normalized.match(/(\d{1,2})\s*:\s*(\d{2})(?:\s*(?:-|~|—|–|至)\s*(\d{1,2})\s*:\s*(\d{2}))?/);
+  const timeMatch = normalized.match(/(?:(上午|下午|晚上|晚间|夜间|中午|凌晨|早上)\s*)?(\d{1,2})\s*(?::\s*(\d{1,2})|点\s*(\d{1,2})?\s*分?)\s*(?:-|~|—|–|至|到)?\s*(?:(上午|下午|晚上|晚间|夜间|中午|凌晨|早上)\s*)?(\d{1,2})?\s*(?::\s*(\d{1,2})|点\s*(\d{1,2})?\s*分?)?/);
   if (!timeMatch) return { notes: [...notes, "开始时间未能自动识别"] };
 
-  const startMinutes = Number(timeMatch[1]) * 60 + Number(timeMatch[2]);
-  const endMinutes = timeMatch[3]
-    ? Number(timeMatch[3]) * 60 + Number(timeMatch[4])
+  const adjustHour = (hour, period) => {
+    if (/下午|晚上|晚间|夜间|中午/.test(period) && hour < 12) return hour + 12;
+    if (/凌晨/.test(period) && hour === 12) return 0;
+    return hour;
+  };
+  const startPeriod = timeMatch[1] || "";
+  const startHour = adjustHour(Number(timeMatch[2]), startPeriod);
+  const startMinute = Number(timeMatch[3] || timeMatch[4] || 0);
+  const endPeriod = timeMatch[5] || startPeriod;
+  const endHour = timeMatch[6] ? adjustHour(Number(timeMatch[6]), endPeriod) : null;
+  const endMinute = timeMatch[6] ? Number(timeMatch[7] || timeMatch[8] || 0) : 0;
+
+  const startMinutes = startHour * 60 + startMinute;
+  const endMinutes = endHour !== null
+    ? endHour * 60 + endMinute
     : startMinutes;
   const date = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-  const startTime = `${String(timeMatch[1]).padStart(2, "0")}:${timeMatch[2]}`;
-  const endTime = timeMatch[3] ? `${String(timeMatch[3]).padStart(2, "0")}:${timeMatch[4]}` : "";
+  const startTime = `${String(startHour).padStart(2, "0")}:${String(startMinute).padStart(2, "0")}`;
+  const endTime = endHour !== null ? `${String(endHour).padStart(2, "0")}:${String(endMinute).padStart(2, "0")}` : "";
 
   return { date, startMinutes, endMinutes, startTime, endTime, notes };
 }
@@ -380,11 +396,11 @@ async function parseDetail(item) {
   const html = await fetchText(item.href);
   const text = stripHtml(html);
   const { school, series, topic } = titleParts(item.title);
-  const timeBlock = extractBlock(text, ["讲座时间", "时间"]);
-  const location = cleanValue(extractBlock(text, ["讲座地点", "地点", "形式", "讲座形式"])) || "待确认";
-  const speaker = cleanValue(extractBlock(text, ["特邀专家", "主讲人", "报告人"])) || "待确认";
+  const timeBlock = extractBlock(text, ["讲座时间", "报告时间", "活动时间", "时间"]);
+  const location = cleanValue(extractBlock(text, ["讲座地点", "报告地点", "活动地点", "地点", "形式", "讲座形式"])) || "待确认";
+  const speaker = cleanValue(extractBlock(text, ["特邀专家", "主讲人", "报告人", "主讲嘉宾"])) || "待确认";
   const summarySource =
-    extractBlock(text, ["内容简介", "报告摘要", "课程简介", "讲座简介"]) ||
+    extractBlock(text, ["讲座内容简介", "讲座内容", "报告内容", "内容简介", "报告摘要", "课程简介", "讲座简介"]) ||
     extractBlock(text, ["讲座主题", "报告题目", "题目"]);
   const parsedTime = parseDateAndTime(timeBlock, item);
 
