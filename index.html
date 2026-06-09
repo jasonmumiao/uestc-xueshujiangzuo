@@ -648,6 +648,7 @@
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+        <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">23</span> / 23 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
@@ -673,7 +674,7 @@
         <span>上午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-08" data-start="540" data-end="540">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-08" data-start="540" data-end="540" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:00</strong>
@@ -703,7 +704,7 @@
         <span>上午 3 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -725,7 +726,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="620">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="620" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20</strong>
@@ -747,7 +748,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="710">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -777,7 +778,7 @@
         <span>上午 2 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -799,7 +800,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="620" data-end="710">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -821,7 +822,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-16" data-start="870" data-end="960">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-16" data-start="870" data-end="960" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30-16:00</strong>
@@ -851,7 +852,7 @@
         <span>上午 1 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="620" data-end="710">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -873,7 +874,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="870" data-end="870">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -903,7 +904,7 @@
         <span>上午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-11:30</strong>
@@ -933,7 +934,7 @@
         <span>上午 3 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="690">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-11:30</strong>
@@ -955,7 +956,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -977,7 +978,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="online" data-period="morning" data-date="2026-06-22" data-start="620" data-end="710">
+        <article class="event" data-format="online" data-period="morning" data-date="2026-06-22" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1007,7 +1008,7 @@
         <span>上午 2 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1029,7 +1030,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1059,7 +1060,7 @@
         <span>上午 3 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1081,7 +1082,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1103,7 +1104,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1133,7 +1134,7 @@
         <span>上午 1 场 · 下午 1 场 · 晚上 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-25" data-start="600" data-end="600">
+        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-25" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1155,7 +1156,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-25" data-start="870" data-end="870">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-25" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -1178,7 +1179,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="evening" data-date="2026-06-25" data-start="1170" data-end="1170">
+        <article class="event" data-format="offline" data-period="evening" data-date="2026-06-25" data-start="1170" data-end="1170" data-has-end="false">
           <div class="time-cell">
             <span class="period">晚上</span>
             <strong class="clock">19:30</strong>
@@ -1208,7 +1209,7 @@
         <span>上午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="online" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710">
+        <article class="event" data-format="online" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1238,7 +1239,7 @@
         <span>下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-30" data-start="900" data-end="960">
+        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-30" data-start="900" data-end="960" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">15:00-16:00</strong>
@@ -1282,6 +1283,7 @@
     const timeStartInput = document.getElementById("time-start");
     const timeEndInput = document.getElementById("time-end");
     const clearButton = document.getElementById("clear-filters");
+    const hideEndedButton = document.getElementById("hide-ended");
 
     function selectedValues(group) {
       return buttons
@@ -1301,7 +1303,34 @@
       return [a, b];
     }
 
-    function matchesCurrentFilters(event) {
+    function getShanghaiNow() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23"
+      }).formatToParts(new Date()).reduce((acc, part) => {
+        acc[part.type] = part.value;
+        return acc;
+      }, {});
+      return {
+        date: `${parts.year}-${parts.month}-${parts.day}`,
+        minutes: Number(parts.hour) * 60 + Number(parts.minute)
+      };
+    }
+
+    function isEnded(event, now) {
+      const eventDate = event.dataset.date;
+      if (eventDate < now.date) return true;
+      if (eventDate > now.date) return false;
+      if (event.dataset.hasEnd !== "true") return false;
+      return Number(event.dataset.end) < now.minutes;
+    }
+
+    function matchesCurrentFilters(event, now) {
       const formats = selectedValues("format");
       const periods = selectedValues("period");
       const [timeStart, timeEnd] = normalizedRange(minutesFromTime(timeStartInput.value), minutesFromTime(timeEndInput.value));
@@ -1309,7 +1338,9 @@
       const eventDate = event.dataset.date;
       const eventStart = Number(event.dataset.start);
       const eventEnd = Number(event.dataset.end);
+      const hideEnded = hideEndedButton?.getAttribute("aria-pressed") === "true";
 
+      if (hideEnded && isEnded(event, now)) return false;
       if (formats.length && !formats.includes(event.dataset.format)) return false;
       if (periods.length && !periods.includes(event.dataset.period)) return false;
       if (dateStart && eventDate < dateStart) return false;
@@ -1321,8 +1352,9 @@
 
     function applyFilters() {
       let count = 0;
+      const now = getShanghaiNow();
       events.forEach((event) => {
-        const visible = matchesCurrentFilters(event);
+        const visible = matchesCurrentFilters(event, now);
         event.hidden = !visible;
         if (visible) count += 1;
       });

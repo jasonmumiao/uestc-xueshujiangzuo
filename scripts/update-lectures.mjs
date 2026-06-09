@@ -515,7 +515,7 @@ function renderEvent(event) {
   const noteHtml = event.notes.length
     ? `\n            ${event.notes.map((note) => `<p class="correction">${escapeHtml(note)}</p>`).join("\n            ")}`
     : "";
-  return `        <article class="event" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}">
+  return `        <article class="event" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}" data-has-end="${event.endTime ? "true" : "false"}">
           <div class="time-cell">
             <span class="period">${PERIOD_LABELS[event.period]}</span>
             <strong class="clock">${escapeHtml(clockText(event))}</strong>
@@ -605,6 +605,7 @@ function renderHtml(events, existingHtml) {
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+        <button class="filter-button" type="button" id="hide-ended" aria-pressed="false">隐藏已结束</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
       <div class="range-controls" aria-label="日期和时间筛选">
