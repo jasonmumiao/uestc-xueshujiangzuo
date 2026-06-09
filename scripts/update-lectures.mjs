@@ -562,10 +562,6 @@ function renderHtml(events, existingHtml) {
   const arrangedDate = todayShanghaiDate();
   const offlineCount = events.filter((event) => event.format === "offline").length;
   const onlineCount = events.filter((event) => event.format === "online").length;
-  const notes = events.flatMap((event) => event.notes);
-  const correctionNotice = notes.length
-    ? `      <p class="notice">${escapeHtml(Array.from(new Set(notes)).join(" "))}</p>\n`
-    : "";
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -625,7 +621,7 @@ function renderHtml(events, existingHtml) {
       <p class="notice good">线下讲座直接按表中地点前往即可，不需要走报名流程；建议提前到场，现场听从学院或工作人员安排。</p>
       <p class="notice info">请带上《电子科技大学研究生学术活动登记表》用于现场盖章/登记。官方下载：<a href="${STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表</a>；留学生版本：<a href="${INTERNATIONAL_STAMP_FORM_URL}" target="_blank" rel="noopener">研究生学术活动登记表（留学生）</a>。</p>
       <p class="notice info">学术交流月讲座要求参加 2 场及以上；与其他学术活动合计要求达到 10 场及以上。</p>
-${correctionNotice}    </div>
+    </div>
 
 ${renderDays(events)}
 
