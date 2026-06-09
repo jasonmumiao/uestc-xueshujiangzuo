@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { promisify } from "node:util";
 
 const SOURCE_BASE = "https://gr.uestc.edu.cn";
 const LIST_PATH = "/jiaoxue/145";
@@ -12,6 +14,8 @@ const SUMMARY_LIMIT = 180;
 const AI_SUMMARY_LIMIT = 180;
 const AI_SUMMARY_MODEL = process.env.AI_SUMMARY_MODEL || "@cf/meta/llama-3.1-8b-instruct";
 const DRY_RUN = process.argv.includes("--dry-run");
+const USER_AGENT = "Mozilla/5.0 lecture-updater (+https://xueshujiangzuo.jasonmumiao.online/)";
+const execFileAsync = promisify(execFile);
 
 const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc";
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
@@ -88,14 +92,21 @@ function stripHtml(html = "") {
 
 async function fetchText(url, attempt = 1) {
   const maxAttempts = 5;
-  const response = await fetch(url, {
-    headers: {
-      "user-agent": "Mozilla/5.0 lecture-updater (+https://xueshujiangzuo.jasonmumiao.online/)"
+  let response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        "user-agent": USER_AGENT
+      }
+    });
+  } catch (error) {
+    if (attempt < maxAttempts) {
+      await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
+      return fetchText(url, attempt + 1);
     }
-  }).catch((error) => {
-    if (attempt < maxAttempts) return null;
-    throw error;
-  });
+    console.warn(`Native fetch failed for ${url}: ${error.message}; trying curl fallback.`);
+    return fetchTextWithCurl(url);
+  }
 
   if (!response) {
     await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
@@ -107,10 +118,26 @@ async function fetchText(url, attempt = 1) {
       await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
       return fetchText(url, attempt + 1);
     }
-    throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    console.warn(`Native fetch returned ${response.status} for ${url}; trying curl fallback.`);
+    return fetchTextWithCurl(url);
   }
 
   return response.text();
+}
+
+async function fetchTextWithCurl(url) {
+  const { stdout } = await execFileAsync("curl", [
+    "-fsSL",
+    "--retry", "3",
+    "--retry-delay", "2",
+    "--connect-timeout", "15",
+    "--max-time", "60",
+    "-A", USER_AGENT,
+    url
+  ], {
+    maxBuffer: 6 * 1024 * 1024
+  });
+  return stdout;
 }
 
 function parseChineseDate(value) {
@@ -610,6 +637,7 @@ async function main() {
     listItems = await collectListItems();
   } catch (error) {
     console.warn(`Source list is temporarily unavailable; keeping existing page. ${error.message}`);
+    if (process.env.CI) throw error;
     return;
   }
   const detailEvents = [];
