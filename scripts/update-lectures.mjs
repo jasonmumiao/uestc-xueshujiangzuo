@@ -16,6 +16,7 @@ const AI_SUMMARY_MODEL = process.env.AI_SUMMARY_MODEL || "@cf/meta/llama-3.1-8b-
 const DRY_RUN = process.argv.includes("--dry-run");
 const USER_AGENT = "Mozilla/5.0 lecture-updater (+https://xueshujiangzuo.jasonmumiao.online/)";
 const execFileAsync = promisify(execFile);
+let preferCurlFetch = process.env.FORCE_CURL_FETCH === "1";
 
 const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151913_57363.doc";
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
@@ -91,6 +92,8 @@ function stripHtml(html = "") {
 }
 
 async function fetchText(url, attempt = 1) {
+  if (preferCurlFetch) return fetchTextWithCurl(url);
+
   const maxAttempts = 5;
   let response;
   try {
@@ -100,6 +103,11 @@ async function fetchText(url, attempt = 1) {
       }
     });
   } catch (error) {
+    if (process.env.CI) {
+      preferCurlFetch = true;
+      console.warn(`Native fetch failed for ${url}: ${error.message}; switching CI run to curl fallback.`);
+      return fetchTextWithCurl(url);
+    }
     if (attempt < maxAttempts) {
       await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
       return fetchText(url, attempt + 1);
@@ -114,6 +122,11 @@ async function fetchText(url, attempt = 1) {
   }
 
   if (!response.ok) {
+    if (process.env.CI) {
+      preferCurlFetch = true;
+      console.warn(`Native fetch returned ${response.status} for ${url}; switching CI run to curl fallback.`);
+      return fetchTextWithCurl(url);
+    }
     if (attempt < maxAttempts) {
       await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
       return fetchText(url, attempt + 1);
