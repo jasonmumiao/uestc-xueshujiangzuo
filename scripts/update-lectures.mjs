@@ -22,12 +22,24 @@ const STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190
 const INTERNATIONAL_STAMP_FORM_URL = "https://gr.uestc.edu.cn/attached/papers/116/201905/20190528151919_85988.docx";
 
 const STOP_LABELS = [
-  "讲座时间", "报告时间", "活动时间", "时间", "讲座地点", "报告地点", "活动地点", "地点",
-  "特邀专家", "主讲人", "报告人", "主讲嘉宾",
+  "讲座时间", "报告时间", "活动时间", "时间", "讲座地点", "报告地点", "活动地点", "地点", "形式", "讲座形式",
+  "特邀专家", "主讲专家", "主讲人", "报告人", "演讲人", "主讲嘉宾",
   "讲座主题", "报告题目", "题目", "讲座内容简介", "讲座内容", "报告内容", "内容简介", "报告摘要", "课程简介", "讲座简介",
-  "主讲人简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介",
-  "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "欢迎", "附件",
+  "主讲人简介", "主讲专家简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介", "报告人简介",
+  "讲座QQ群", "QQ群", "讲座 QQ 群", "QQ 群", "联系人", "联系方式", "主办单位", "承办单位", "协办单位", "组织单位",
+  "报名方式", "报名链接", "报名时间", "报名入口", "报名", "参与方式", "参与链接", "讲座链接", "会议链接",
+  "欢迎", "附件", "注意", "注意事项", "温馨提示",
   "上一篇", "下一篇", "友情链接"
+];
+
+// 老师一栏经常在「主讲人」标题下被前面带编号的「3、报名链接：」「1、报名方式：」等行污染。
+// 这些行不是常规标签，所以用宽松前缀匹配，在「主讲人」抓取时提前截断。
+const SPEAKER_STOP_PATTERNS = [
+  /^\s*\d+\s*[、.):：]\s*(报名|参与|主办|承办|协办|组织|联系|注意|讲座链接|会议链接|QQ)/,
+  /^\s*(报名|参与|主办|承办|协办|组织|联系|注意|温馨提示)\s*[：:]/,
+  /^\s*(https?:|www\.)/,
+  /^\s*【/, // 括号引出的活动说明
+  /^\s*(欢迎|请|由于|因|限|名额|扫码|扫描)/
 ];
 
 const WEEKDAYS = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -195,7 +207,7 @@ async function collectListItems() {
   return Array.from(new Map(collected.map((item) => [item.href, item])).values());
 }
 
-function extractBlock(text, labels, stops = STOP_LABELS) {
+function extractBlock(text, labels, stops = STOP_LABELS, extraPatterns = []) {
   const labelPattern = labels.map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
   const startMatch = new RegExp(`(?:^|\\n)\\s*(?:${labelPattern})\\s*[:：]?\\s*`, "i").exec(text);
   if (!startMatch) return "";
@@ -206,9 +218,65 @@ function extractBlock(text, labels, stops = STOP_LABELS) {
     .filter((label) => !labels.includes(label))
     .map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
     .join("|");
-  const stopMatch = new RegExp(`\\n\\s*(?:${stopPattern})\\s*[:：]?\\s*`, "i").exec(rest);
-  const block = stopMatch ? rest.slice(0, stopMatch.index) : rest;
-  return normalizeText(block);
+  const labelStop = new RegExp(`\\n\\s*(?:${stopPattern})\\s*[:：]?\\s*`, "i");
+  const patternStop = extraPatterns.length
+    ? new RegExp(`\\n(${extraPatterns.map((p) => p.source).join("|")})`, "i")
+    : null;
+
+  let labelIndex = labelStop.exec(rest)?.index ?? -1;
+  let patternIndex = patternStop ? patternStop.exec(rest)?.index ?? -1 : -1;
+
+  let end = rest.length;
+  if (labelIndex >= 0) end = Math.min(end, labelIndex);
+  if (patternIndex >= 0) end = Math.min(end, patternIndex);
+
+  return normalizeText(rest.slice(0, end));
+}
+
+// 把主讲人字段里混入的机构、报名链接、多余备注清掉，只留「姓名 职称」。
+function cleanSpeaker(value = "") {
+  const text = normalizeText(value)
+    .replace(/^[:：]\s*/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text) return "";
+
+  // 括号里通常是「限140人」「单位」等说明，整段去掉，再清理孤立的右括号。
+  const stripped = text
+    .replace(/[（(][^）)]*[)）]/g, "")
+    .replace(/[)）]/g, "")
+    .trim();
+  if (!stripped) return text;
+
+  const cleaned = stripped
+    .split(/\s*[；;]/).map((part) => part.trim()).filter(Boolean)
+    .join("；")
+    // 去掉行内的报名链接
+    .replace(/(https?:\/\/\S+)/g, "")
+    // 去掉「报名/请参加/扫码/入群/限人数/欢迎」等说明性尾巴
+    .replace(/\s*[,，]?\s*(报名|请参加|请扫码|扫码|入群|名额|欢迎各位|谢谢)[^，,；;]*$/g, "")
+    .replace(/\s*\d+\s*[、.):：][^）)\n]*/g, "")
+    // 合并被拆开的职称：「陈钦副 研究员」->「陈钦副研究员」
+    .replace(/(副|正)\s+(教授|研究员|主任医师|工程师)/g, "$1$2")
+    .trim();
+
+  // 末尾括号通常是学术头衔，保留姓名+职称即可；但若整段很短则直接返回。
+  const result = (cleaned.split(/[（(]/)[0] || "").trim() || cleaned;
+
+  if (result.length <= 30) return result;
+  // 过长时按职称关键词截断，保留「姓名 + 首个职称/单位」。
+  return result
+    .replace(/(教授|研究员|副教授|副研究员|高级工程师|工程师|讲师|院士|博士|专家|董事长|总经理|总监|主任)\s*[\u4e00-\u9fa5A-Za-z].*/, "$1")
+    .trim();
+}
+
+// 从「主讲人简介」段落里反推主讲人姓名。
+function speakerFromBio(text = "") {
+  const block = normalizeText(text);
+  if (!block) return "";
+  const match = block.match(/^([^\s，,。：:；;（(]{2,8})\s*(教授|研究员|副教授|副研究员|高级工程师|工程师|院士|博士|专家)/);
+  if (match) return cleanSpeaker(`${match[1]}${match[2]}`);
+  return "";
 }
 
 function cleanValue(value = "") {
@@ -439,7 +507,14 @@ async function parseDetail(item) {
   const { school, series, topic } = titleParts(item.title);
   const timeBlock = extractBlock(text, ["讲座时间", "报告时间", "活动时间", "时间"]);
   const location = cleanValue(extractBlock(text, ["讲座地点", "报告地点", "活动地点", "地点", "形式", "讲座形式"])) || "待确认";
-  const speaker = cleanValue(extractBlock(text, ["特邀专家", "主讲人", "报告人", "主讲嘉宾"])) || "待确认";
+  const rawSpeaker = extractBlock(
+    text,
+    ["特邀专家", "主讲专家", "主讲人", "报告人", "演讲人", "主讲嘉宾"],
+    STOP_LABELS,
+    SPEAKER_STOP_PATTERNS
+  );
+  const speakerBio = extractBlock(text, ["主讲人简介", "主讲专家简介", "专家简介", "报告人简介", "嘉宾简介", "个人简介"]);
+  const speaker = cleanSpeaker(rawSpeaker) || speakerFromBio(speakerBio) || "待确认";
   const summarySource =
     extractBlock(text, ["讲座内容简介", "讲座内容", "报告内容", "内容简介", "报告摘要", "课程简介", "讲座简介"]) ||
     extractBlock(text, ["讲座主题", "报告题目", "题目"]);
@@ -577,7 +652,12 @@ function renderHtml(events, existingHtml) {
   <header class="site-header">
     <div class="wrap">
       <div class="kicker">第 11 届研究生学术交流月</div>
-      <h1>电子科技大学 2026 年学术交流月讲座表</h1>
+      <h1>
+        电子科技大学 2026 年学术交流月讲座表
+        <a class="github-link" href="https://github.com/jasonmumiao/uestc-xueshujiangzuo" target="_blank" rel="noopener" title="GitHub 源码" aria-label="GitHub 源码">
+          <svg class="github-icon" viewBox="0 0 16 16" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </h1>
       <p class="lead">自动整理研究生院已发布的学术交流月讲座通知，突出日期、时段、地点/线上入口和内容简介，适合手机与桌面快速浏览。</p>
       <div class="source-row" aria-label="数据来源">
         <span>数据源：<a href="https://gr.uestc.edu.cn/jiaoxue/145?page=1" target="_blank" rel="noopener">电子科技大学研究生院</a></span>
@@ -633,7 +713,7 @@ ${renderDays(events)}
 
   <footer>
     <div class="wrap">
-      本页为公开通知整理版，时间地点以源网页后续更新为准。源码：<a href="https://github.com/jasonmumiao/uestc-xueshujiangzuo" target="_blank" rel="noopener">GitHub</a>。
+      本页为公开通知整理版，时间地点以源网页后续更新为准。
     </div>
   </footer>
 
