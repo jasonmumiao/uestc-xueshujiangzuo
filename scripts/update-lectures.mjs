@@ -692,7 +692,6 @@ function renderHtml(events, existingHtml) {
         <span class="system-label">显示设置</span>
         <button class="setting-button" type="button" id="hide-ended" aria-pressed="true">已结束：隐藏</button>
         <button class="setting-button" type="button" id="compact-view" aria-pressed="false">视图：完整</button>
-        <a class="setting-button refresh-link" href="https://github.com/jasonmumiao/uestc-xueshujiangzuo/actions/workflows/update-lectures.yml" target="_blank" rel="noopener" title="跳转到 GitHub Actions 手动触发更新讲座数据">↻ 更新讲座</a>
       </div>
       <div class="range-controls" aria-label="日期和时间筛选">
         <label class="field search-field" for="lecture-search"><span>搜索</span><input id="lecture-search" type="search" placeholder="标题、学院、主讲人、地点、内容"></label>
