@@ -458,6 +458,43 @@
       color: var(--teal);
     }
 
+    .favorite-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-left: auto;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .favorite-button:hover {
+      background: var(--gold-soft, rgba(245, 158, 11, 0.12));
+      color: var(--gold, #d97706);
+    }
+
+    .favorite-button svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      transition: fill 0.15s ease;
+    }
+
+    .favorite-button[aria-pressed="true"] {
+      color: var(--gold, #d97706);
+    }
+
+    .favorite-button[aria-pressed="true"] svg {
+      fill: currentColor;
+      stroke: currentColor;
+    }
+
     h3 {
       margin: 0;
       font-size: 20px;
@@ -864,6 +901,7 @@
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+        <button class="filter-button" type="button" data-filter-group="favorite" data-filter-value="yes" aria-pressed="false">⭐ 已收藏</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">37</span> / 37 场</div>
       <div class="system-controls" role="group" aria-label="显示设置">
@@ -895,7 +933,7 @@
         <span>上午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-08" data-start="540" data-end="540" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14580" data-format="offline" data-period="morning" data-date="2026-06-08" data-start="540" data-end="540" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:00</strong>
@@ -905,6 +943,9 @@
             <div class="title-row">
               <span class="school">航空航天学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14580" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>复杂气-水两相流4D测量的挑战</h3>
             <p class="speaker">Kyung Chun Kim教授</p>
@@ -925,7 +966,7 @@
         <span>上午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-12" data-start="570" data-end="570" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14632" data-format="offline" data-period="morning" data-date="2026-06-12" data-start="570" data-end="570" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:30</strong>
@@ -935,6 +976,9 @@
             <div class="title-row">
               <span class="school">电子科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14632" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>了不起的中国航天</h3>
             <p class="speaker">崔万照 教授</p>
@@ -955,7 +999,7 @@
         <span>上午 4 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="570" data-end="690" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14618" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="570" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:30-11:30</strong>
@@ -965,6 +1009,9 @@
             <div class="title-row">
               <span class="school">马克思主义学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14618" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>中国共产党党内政治生活的历史经验</h3>
             <p class="speaker">赵诺</p>
@@ -977,7 +1024,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14564" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -987,6 +1034,9 @@
             <div class="title-row">
               <span class="school">信息与软件工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14564" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>VR+AI视频传输关键技术</h3>
             <p class="speaker">郭宗明教授 北京大学</p>
@@ -999,7 +1049,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="620" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14601" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="620" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20</strong>
@@ -1009,6 +1059,9 @@
             <div class="title-row">
               <span class="school">自动化工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14601" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>常规风洞气动设计规范与实践</h3>
             <p class="speaker">陈钦副研究员</p>
@@ -1021,7 +1074,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14570" data-format="offline" data-period="morning" data-date="2026-06-15" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1031,6 +1084,9 @@
             <div class="title-row">
               <span class="school">医学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14570" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>神经科学领域重大进展</h3>
             <p class="speaker">张存金教授</p>
@@ -1043,7 +1099,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-15" data-start="870" data-end="870" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14635" data-format="offline" data-period="afternoon" data-date="2026-06-15" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -1053,6 +1109,9 @@
             <div class="title-row">
               <span class="school">国家卓越工程师学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14635" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>“智能化电子装备”</h3>
             <p class="speaker">中国电子科技集团公司第十研究所专家</p>
@@ -1073,7 +1132,7 @@
         <span>上午 4 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="570" data-end="570" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14633" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="570" data-end="570" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:30</strong>
@@ -1083,6 +1142,9 @@
             <div class="title-row">
               <span class="school">电子科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14633" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>“光电对抗前沿理论方法”</h3>
             <p class="speaker">胡以华 教授</p>
@@ -1095,7 +1157,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14621" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1105,6 +1167,9 @@
             <div class="title-row">
               <span class="school">信息与软件工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14621" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>盲计算——网络安全与服务计算的新前沿</h3>
             <p class="speaker">余水教授 悉尼科技大学</p>
@@ -1117,7 +1182,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14595" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1127,6 +1192,9 @@
             <div class="title-row">
               <span class="school">光电科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14595" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>卫星互联网发展趋势与产业创新</h3>
             <p class="speaker">李雷 高级工程师</p>
@@ -1139,7 +1207,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14573" data-format="offline" data-period="morning" data-date="2026-06-16" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1149,6 +1217,9 @@
             <div class="title-row">
               <span class="school">医学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14573" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>半导体阵列生物芯片及微纳样本二维操控</h3>
             <p class="speaker">马汉彬教授</p>
@@ -1161,7 +1232,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-16" data-start="870" data-end="960" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14593" data-format="offline" data-period="afternoon" data-date="2026-06-16" data-start="870" data-end="960" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30-16:00</strong>
@@ -1171,6 +1242,9 @@
             <div class="title-row">
               <span class="school">数学科学学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14593" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>人工智能在量化金融中的应用</h3>
             <p class="speaker">张功球 副研究员 香港中文大学</p>
@@ -1191,7 +1265,7 @@
         <span>上午 2 场 · 下午 2 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="540" data-end="630" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14628" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="540" data-end="630" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">09:00-10:30</strong>
@@ -1201,6 +1275,9 @@
             <div class="title-row">
               <span class="school">材料与能源学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14628" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>晶硅光伏前沿技术介绍</h3>
             <p class="speaker">待确认</p>
@@ -1213,7 +1290,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14574" data-format="offline" data-period="morning" data-date="2026-06-17" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1223,6 +1300,9 @@
             <div class="title-row">
               <span class="school">医学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14574" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>中华传统文化经典导读：《周易》文本简介</h3>
             <p class="speaker">钱浩教授</p>
@@ -1235,7 +1315,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="840" data-end="930" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14634" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="840" data-end="930" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:00-15:30</strong>
@@ -1245,6 +1325,9 @@
             <div class="title-row">
               <span class="school">信通学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14634" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>实时相移结构光三维成像</h3>
             <p class="speaker">刘凯，四川大学电气信息学院教授</p>
@@ -1257,7 +1340,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="870" data-end="870" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14583" data-format="offline" data-period="afternoon" data-date="2026-06-17" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -1267,6 +1350,9 @@
             <div class="title-row">
               <span class="school">集成电路科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14583" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>大有可为的集成电路封装技术</h3>
             <p class="speaker">张进兵 天水华天科技股份有限公司</p>
@@ -1287,7 +1373,7 @@
         <span>上午 2 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14584" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-11:30</strong>
@@ -1297,6 +1383,9 @@
             <div class="title-row">
               <span class="school">集成电路科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14584" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>芯趋势共飞腾——通算和智算芯片的技术和生态</h3>
             <p class="speaker">任巨 飞腾信息技术有限公司</p>
@@ -1309,7 +1398,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14642" data-format="offline" data-period="morning" data-date="2026-06-18" data-start="600" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-11:30</strong>
@@ -1319,6 +1408,9 @@
             <div class="title-row">
               <span class="school">生命科学与技术学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14642" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>肿瘤免疫的生物信息与AI研究进展</h3>
             <p class="speaker">郭安源</p>
@@ -1339,7 +1431,7 @@
         <span>上午 3 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="690" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14594" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="690" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-11:30</strong>
@@ -1349,6 +1441,9 @@
             <div class="title-row">
               <span class="school">数学科学学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14594" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>惯性动力学模型在科学计算中的发展和应用</h3>
             <p class="speaker">董国志 副教授 中南大学</p>
@@ -1361,7 +1456,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14603" data-format="offline" data-period="morning" data-date="2026-06-22" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1371,6 +1466,9 @@
             <div class="title-row">
               <span class="school">自动化工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14603" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>浅谈人工智能及应用</h3>
             <p class="speaker">黄廷文 教授</p>
@@ -1383,7 +1481,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="online" data-period="morning" data-date="2026-06-22" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14571" data-format="online" data-period="morning" data-date="2026-06-22" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1393,6 +1491,9 @@
             <div class="title-row">
               <span class="school">医学院</span>
               <span class="format online">线上</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14571" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>眼科医疗AI的技术前沿与学科交叉创新讲座</h3>
             <p class="speaker">陈新建教授</p>
@@ -1413,7 +1514,7 @@
         <span>上午 2 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14604" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1423,6 +1524,9 @@
             <div class="title-row">
               <span class="school">自动化工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14604" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>复杂障碍环境下轮式移动机器人的非凸NMPC框架</h3>
             <p class="speaker">黄廷文 教授</p>
@@ -1435,7 +1539,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14596" data-format="offline" data-period="morning" data-date="2026-06-23" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1445,6 +1549,9 @@
             <div class="title-row">
               <span class="school">光电科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14596" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>气体传感界面的原位表征、作用机制及选择性调控</h3>
             <p class="speaker">董帆 教授</p>
@@ -1457,7 +1564,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-23" data-start="870" data-end="960" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14649" data-format="offline" data-period="afternoon" data-date="2026-06-23" data-start="870" data-end="960" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30-16:00</strong>
@@ -1467,6 +1574,9 @@
             <div class="title-row">
               <span class="school">计算机（网安）学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14649" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>异步公共子集：最优复杂度与后量子安全</h3>
             <p class="speaker">Qiang Tang 副教授 悉尼大学</p>
@@ -1487,7 +1597,7 @@
         <span>上午 3 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14597" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1497,6 +1607,9 @@
             <div class="title-row">
               <span class="school">光电科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14597" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>光电子技术在团队的发展</h3>
             <p class="speaker">崔旭东 教授</p>
@@ -1509,7 +1622,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14602" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1519,6 +1632,9 @@
             <div class="title-row">
               <span class="school">自动化工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14602" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>中国集成电路产业装备及测试技术发展</h3>
             <p class="speaker">钟锋浩 高级工程师</p>
@@ -1531,7 +1647,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14605" data-format="offline" data-period="morning" data-date="2026-06-24" data-start="600" data-end="600" data-has-end="false">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00</strong>
@@ -1541,6 +1657,9 @@
             <div class="title-row">
               <span class="school">自动化工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14605" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>自主气球机器人的动力学及控制</h3>
             <p class="speaker">张福民 教授</p>
@@ -1561,7 +1680,7 @@
         <span>下午 1 场 · 晚上 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-25" data-start="870" data-end="870" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14585" data-format="offline" data-period="afternoon" data-date="2026-06-25" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -1571,6 +1690,9 @@
             <div class="title-row">
               <span class="school">集成电路科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14585" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>射频器件市场的转型与现状—日本射频器件产业的兴衰</h3>
             <p class="speaker">YAMAGA SHIGEKI</p>
@@ -1584,7 +1706,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="evening" data-date="2026-06-25" data-start="1170" data-end="1170" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14582" data-format="offline" data-period="evening" data-date="2026-06-25" data-start="1170" data-end="1170" data-has-end="false">
           <div class="time-cell">
             <span class="period">晚上</span>
             <strong class="clock">19:30</strong>
@@ -1594,6 +1716,9 @@
             <div class="title-row">
               <span class="school">航空航天学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14582" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>矛盾论视角下的红楼情感动力学刍议</h3>
             <p class="speaker">李滚教授</p>
@@ -1614,7 +1739,7 @@
         <span>上午 1 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-26" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14648" data-format="offline" data-period="morning" data-date="2026-06-26" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1624,6 +1749,9 @@
             <div class="title-row">
               <span class="school">外国语学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14648" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>语言研究中的社会网络分析：原理、技术与应用</h3>
             <p class="speaker">汪顺玉教授 西安外国语大学</p>
@@ -1636,7 +1764,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-26" data-start="900" data-end="1020" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14619" data-format="offline" data-period="afternoon" data-date="2026-06-26" data-start="900" data-end="1020" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">15:00-17:00</strong>
@@ -1646,6 +1774,9 @@
             <div class="title-row">
               <span class="school">马克思主义学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14619" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>深入理解“第二个结合”的三重维度</h3>
             <p class="speaker">陈红娟</p>
@@ -1666,7 +1797,7 @@
         <span>上午 2 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="online" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14572" data-format="online" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1676,6 +1807,9 @@
             <div class="title-row">
               <span class="school">医学院</span>
               <span class="format online">线上</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14572" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>抗肿瘤免疫治疗-从理论到实践</h3>
             <p class="speaker">王晨辉教授</p>
@@ -1688,7 +1822,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14651" data-format="offline" data-period="morning" data-date="2026-06-29" data-start="620" data-end="710" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:20-11:50</strong>
@@ -1698,6 +1832,9 @@
             <div class="title-row">
               <span class="school">计算机（网安）学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14651" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>匿名凭证研究进展：门限 BBS+ 签名与凭证持有者绑定机制</h3>
             <p class="speaker">Guomin Yang 副教授 新加坡管理大学</p>
@@ -1718,7 +1855,7 @@
         <span>上午 1 场 · 下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="morning" data-date="2026-06-30" data-start="600" data-end="720" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14643" data-format="offline" data-period="morning" data-date="2026-06-30" data-start="600" data-end="720" data-has-end="true">
           <div class="time-cell">
             <span class="period">上午</span>
             <strong class="clock">10:00-12:00</strong>
@@ -1728,6 +1865,9 @@
             <div class="title-row">
               <span class="school">马克思主义学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14643" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>“两路”精神研究前沿问题</h3>
             <p class="speaker">胡子祥</p>
@@ -1740,7 +1880,7 @@
           </aside>
         </article>
 
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-06-30" data-start="900" data-end="960" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14586" data-format="offline" data-period="afternoon" data-date="2026-06-30" data-start="900" data-end="960" data-has-end="true">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">15:00-16:00</strong>
@@ -1750,6 +1890,9 @@
             <div class="title-row">
               <span class="school">集成电路科学与工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14586" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>跨越验证鸿沟：从传统方法学到 AI Agent 驱动的芯未来</h3>
             <p class="speaker">屠宁杰 联发芯软件设计有限公司</p>
@@ -1770,7 +1913,7 @@
         <span>晚上 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="evening" data-date="2026-07-02" data-start="1140" data-end="1260" data-has-end="true">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14644" data-format="offline" data-period="evening" data-date="2026-07-02" data-start="1140" data-end="1260" data-has-end="true">
           <div class="time-cell">
             <span class="period">晚上</span>
             <strong class="clock">19:00-21:00</strong>
@@ -1780,6 +1923,9 @@
             <div class="title-row">
               <span class="school">马克思主义学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14644" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>抗震救灾精神口述史研究前沿问题</h3>
             <p class="speaker">胡子祥</p>
@@ -1800,7 +1946,7 @@
         <span>下午 1 场</span>
       </div>
       <div class="event-list">
-        <article class="event" data-format="offline" data-period="afternoon" data-date="2026-07-03" data-start="870" data-end="870" data-has-end="false">
+        <article class="event" data-id="https://gr.uestc.edu.cn/jiaoxue/145/14646" data-format="offline" data-period="afternoon" data-date="2026-07-03" data-start="870" data-end="870" data-has-end="false">
           <div class="time-cell">
             <span class="period">下午</span>
             <strong class="clock">14:30</strong>
@@ -1810,6 +1956,9 @@
             <div class="title-row">
               <span class="school">信息与软件工程学院</span>
               <span class="format">线下</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="https://gr.uestc.edu.cn/jiaoxue/145/14646" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>多模态大模型的“偏见”与“公平”——如何评估与应对？</h3>
             <p class="speaker">周璐教授 南京航空航天大学</p>
@@ -1847,6 +1996,45 @@
     const hideEndedButton = document.getElementById("hide-ended");
     const compactViewButton = document.getElementById("compact-view");
     const searchInput = document.getElementById("lecture-search");
+    const favoriteButtons = Array.from(document.querySelectorAll(".favorite-button"));
+
+    let favorites = new Set();
+    try {
+      favorites = new Set(JSON.parse(localStorage.getItem("lectures-favorites") || "[]"));
+    } catch (error) {
+      favorites = new Set();
+    }
+
+    function persistFavorites() {
+      try {
+        localStorage.setItem("lectures-favorites", JSON.stringify(Array.from(favorites)));
+      } catch (error) {
+        // localStorage may be unavailable in some embedded browsers.
+      }
+    }
+
+    function syncFavoriteButtons() {
+      favoriteButtons.forEach((button) => {
+        const id = button.dataset.eventId;
+        const pressed = favorites.has(id);
+        button.setAttribute("aria-pressed", String(pressed));
+        button.title = pressed ? "取消收藏" : "收藏";
+      });
+    }
+
+    favoriteButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const id = button.dataset.eventId;
+        if (favorites.has(id)) favorites.delete(id);
+        else favorites.add(id);
+        persistFavorites();
+        syncFavoriteButtons();
+        applyFilters();
+      });
+    });
+
+    syncFavoriteButtons();
 
     function selectedValues(group) {
       return buttons
@@ -1922,6 +2110,8 @@
 
       if (searchTerms.length && !searchTerms.every((term) => searchIndex.get(event).includes(term))) return false;
       if (hideEnded && isEnded(event, now)) return false;
+      const favoriteOnly = selectedValues("favorite").length > 0;
+      if (favoriteOnly && !favorites.has(event.dataset.id)) return false;
       if (formats.length && !formats.includes(event.dataset.format)) return false;
       if (periods.length && !periods.includes(event.dataset.period)) return false;
       if (dateStart && eventDate < dateStart) return false;

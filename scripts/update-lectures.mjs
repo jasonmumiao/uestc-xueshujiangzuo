@@ -521,6 +521,7 @@ async function parseDetail(item) {
   const parsedTime = parseDateAndTime(timeBlock, item);
 
   const event = {
+    id: item.href,
     sourceUrl: item.href,
     published: item.published,
     originalTitle: item.title,
@@ -590,7 +591,7 @@ function renderEvent(event) {
   const noteHtml = event.notes.length
     ? `\n            ${event.notes.map((note) => `<p class="correction">${escapeHtml(note)}</p>`).join("\n            ")}`
     : "";
-  return `        <article class="event" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}" data-has-end="${event.endTime ? "true" : "false"}">
+  return `        <article class="event" data-id="${escapeHtml(event.id)}" data-format="${event.format}" data-period="${event.period}" data-date="${event.date}" data-start="${event.startMinutes}" data-end="${event.endMinutes}" data-has-end="${event.endTime ? "true" : "false"}">
           <div class="time-cell">
             <span class="period">${PERIOD_LABELS[event.period]}</span>
             <strong class="clock">${escapeHtml(clockText(event))}</strong>
@@ -600,6 +601,9 @@ function renderEvent(event) {
             <div class="title-row">
               <span class="school">${escapeHtml(event.school)}</span>
               <span class="format${isOnline ? " online" : ""}">${formatText}</span>
+              <button class="favorite-button" type="button" data-favorite data-event-id="${escapeHtml(event.id)}" aria-pressed="false" aria-label="收藏该讲座" title="收藏">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
             </div>
             <h3>${escapeHtml(event.title)}</h3>
             <p class="speaker">${escapeHtml(event.speaker)}</p>
@@ -681,6 +685,7 @@ function renderHtml(events, existingHtml) {
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="morning" aria-pressed="false">上午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="afternoon" aria-pressed="false">下午</button>
         <button class="filter-button" type="button" data-filter-group="period" data-filter-value="evening" aria-pressed="false">晚上</button>
+        <button class="filter-button" type="button" data-filter-group="favorite" data-filter-value="yes" aria-pressed="false">⭐ 已收藏</button>
       </div>
       <div class="result-count" aria-live="polite"><span id="visible-count">${events.length}</span> / ${events.length} 场</div>
       <div class="system-controls" role="group" aria-label="显示设置">
